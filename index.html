@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
     <title>אקדמיית הדרקונים של עומר - לומדים כפל</title>
     <style>
         :root {
@@ -683,10 +684,6 @@
     </div>
 
     <script>
-        /* =========================================================
-           1. מאגר הדמויות המדריכות (היקאפ, אסטריד, פישלגס)
-           ניתן להחליף לנתיב מקומי בגיטהאב שלך: 'images/hiccup.png' וכו'
-           ========================================================= */
         const GUIDES_DB = {
             hiccup: {
                 name: 'היקאפ',
@@ -708,9 +705,6 @@
             }
         };
 
-        /* =========================================================
-           2. מאגר הדרקונים במאורה
-           ========================================================= */
         const DRAGONS_DB = [
             {
                 id: 'toothless',
@@ -778,9 +772,6 @@
             }
         ];
 
-        /* =========================================================
-           3. מנוע סאונד פנימי (Web Audio API) + אפקט קונפטי
-           ========================================================= */
         let audioCtx = null;
         let isMuted = false;
 
@@ -810,7 +801,6 @@
             const now = audioCtx.currentTime;
 
             if (type === 'pop') {
-                // צליל קליק/בועה בשלב הדילוגים
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
@@ -823,7 +813,6 @@
                 osc.start(now);
                 osc.stop(now + 0.08);
             } else if (type === 'success') {
-                // צליל תשובה נכונה ודג חדש (2 תווים עולים)
                 [523.25, 659.25, 783.99].forEach((freq, idx) => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
@@ -837,7 +826,6 @@
                     osc.stop(now + idx * 0.08 + 0.25);
                 });
             } else if (type === 'error') {
-                // צליל טעות עדין
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sawtooth';
@@ -850,7 +838,6 @@
                 osc.start(now);
                 osc.stop(now + 0.25);
             } else if (type === 'crack') {
-                // צליל סדקים בביצה
                 [300, 450, 350, 600].forEach((freq, idx) => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
@@ -864,7 +851,6 @@
                     osc.stop(now + idx * 0.22 + 0.06);
                 });
             } else if (type === 'fanfare') {
-                // מנגינת ניצחון לבקיעת הדרקון
                 const notes = [
                     { f: 523.25, t: 0, d: 0.14 },
                     { f: 659.25, t: 0.14, d: 0.14 },
@@ -900,9 +886,6 @@
             }
         }
 
-        /* =========================================================
-           4. ניהול מצב המשחק והדמויות
-           ========================================================= */
         let currentNumber = 5;
         let currentStage = 1;
         let skipStep = 1;
@@ -920,7 +903,7 @@
             const el = document.getElementById(elementId);
             if (!el || !guide) return;
             el.style.backgroundColor = guide.color;
-            el.innerHTML = `<img src="${guide.img}" alt="${guide.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${guide.emoji}</span>';">`;
+            el.innerHTML = `<img src="${guide.img}" alt="${guide.name}" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${guide.emoji}</span>';">`;
         }
 
         function saveGame() {
@@ -958,14 +941,12 @@
             playerStats.dragons[randomDragon.id]++;
             saveGame();
 
-            // הכנת הנתונים של הדרקון
             const imgBox = document.getElementById('rewardImgBox');
             imgBox.style.backgroundColor = randomDragon.color;
             imgBox.innerHTML = createDragonImageHTML(randomDragon);
             document.getElementById('rewardName').textContent = randomDragon.name;
             document.getElementById('rewardDesc').textContent = randomDragon.desc;
 
-            // הצגת שלב בקיעת הביצה תחילה
             const eggStage = document.getElementById('eggHatchStage');
             const revealStage = document.getElementById('dragonRevealStage');
             eggStage.style.display = 'flex';
@@ -974,7 +955,6 @@
 
             playSound('crack');
 
-            // לאחר 1.2 שניות הביצה בוקעת והדרקון נחשף עם קונפטי ומנגינה
             setTimeout(() => {
                 eggStage.style.display = 'none';
                 revealStage.style.display = 'block';
@@ -984,7 +964,7 @@
         }
 
         function createDragonImageHTML(dragon) {
-            return `<img src="${dragon.img}" alt="${dragon.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${dragon.emoji}</span>';">`;
+            return `<img src="${dragon.img}" alt="${dragon.name}" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${dragon.emoji}</span>';">`;
         }
 
         function closeReward() {
@@ -992,7 +972,6 @@
             document.getElementById('rewardModal').classList.remove('active');
         }
 
-        // אתחול מסך הבית
         function initHome() {
             renderGuideAvatar('homeAvatar', 'hiccup');
             const grid = document.getElementById('numbersGrid');
@@ -1023,7 +1002,6 @@
             document.getElementById('homeScreen').classList.add('active');
         }
 
-        // מעבר בין 3 השלבים הפדגוגיים
         function setStage(stage) {
             currentStage = stage;
             document.querySelectorAll('.stage-tab').forEach((t, idx) => {
@@ -1061,7 +1039,6 @@
             }
         }
 
-        // שלב 1: חיבור חוזר ודילוגים
         function setupStage1() {
             skipStep = 1;
             document.getElementById('skipNumTitle').textContent = currentNumber;
@@ -1118,7 +1095,6 @@
             }
         }
 
-        // שלבים 2 ו-3: מחולל שאלות
         function nextQuestion() {
             document.getElementById('hintBox').style.display = 'none';
             currentMultiplier = Math.floor(Math.random() * 10) + 1;
@@ -1182,7 +1158,6 @@
             hintBox.style.display = 'block';
         }
 
-        // מקלדת שלב 3
         function pressPad(val) {
             playSound('pop');
             if (val === 'C') {
@@ -1218,7 +1193,6 @@
             }
         }
 
-        // מאורת הדרקונים
         function openLair() {
             playSound('pop');
             const grid = document.getElementById('dragonsGrid');
@@ -1257,7 +1231,6 @@
             document.getElementById('lairModal').classList.remove('active');
         }
 
-        // הפעלה ראשונית
         initHome();
     </script>
 </body>
