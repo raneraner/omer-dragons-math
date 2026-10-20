@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>אקדמיית הדרקונים של עומר - לומדים כפל</title>
+    <style>
+        :root {
+            --bg-dark: #1a2634;
+            --bg-card: #2c3e50;
+            --accent-orange: #e67e22;
+            --accent-gold: #f1c40f;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --text-light: #ecf0f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* סרגל עליון */
+        header {
+            background-color: #111922;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent-orange);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .fish-meter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .fish-icon {
+            font-size: 1.4rem;
+            filter: grayscale(100%) opacity(0.4);
+            transition: all 0.3s ease;
+        }
+
+        .fish-icon.active {
+            filter: grayscale(0%) opacity(1);
+            transform: scale(1.2);
+        }
+
+        .lair-btn {
+            background: linear-gradient(135deg, var(--accent-orange), #d35400);
+            color: white;
+            border: 2px solid var(--accent-gold);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 0 #a04000;
+        }
+
+        .lair-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* מיכל ראשי */
+        main {
+            flex: 1;
+            padding: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        /* כרטיס דמות מדריכה */
+        .guide-box {
+            background-color: var(--bg-card);
+            border: 2px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .guide-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: var(--accent-orange);
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .guide-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .guide-text {
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        /* בחירת מספר במסך הבית */
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .num-btn {
+            background: var(--bg-card);
+            border: 3px solid var(--accent-blue);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 20px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #1f618d;
+            transition: transform 0.1s;
+        }
+
+        .num-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        /* ניווט שלבים */
+        .stage-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .stage-tab {
+            flex: 1;
+            padding: 10px 6px;
+            background: #111922;
+            border: 2px solid #34495e;
+            color: #7f8c8d;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .stage-tab.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: white;
+        }
+
+        /* שלב 1: הבנה ודילוגים */
+        .visual-demo {
+            background: rgba(0,0,0,0.2);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.15rem;
+        }
+
+        .baskets-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .basket {
+            background: #34495e;
+            border: 2px dashed var(--accent-gold);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+        }
+
+        .skip-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .skip-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-gold);
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 16px 4px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .skip-btn.done {
+            background: var(--accent-green);
+            border-color: white;
+            transform: scale(0.95);
+        }
+
+        /* אזור שאלה (שלבים 2 ו-3) */
+        .question-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            border: 3px solid #34495e;
+            margin: 6px 0;
+        }
+
+        .question-text {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            direction: ltr;
+        }
+
+        .hint-box {
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--accent-red);
+            border-radius: 10px;
+            color: #ffcccc;
+            font-size: 1.05rem;
+            display: none;
+        }
+
+        /* תשובות אמריקאיות (שלב 2) */
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .ans-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #1f618d;
+        }
+
+        .ans-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        /* מקלדת וירטואלית (שלב 3) */
+        .numpad-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .numpad-display {
+            background: #111922;
+            border: 2px solid var(--accent-gold);
+            border-radius: 12px;
+            height: 55px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            direction: ltr;
+        }
+
+        .pad-btn {
+            background: #34495e;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1a252f;
+        }
+
+        .pad-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .pad-btn.submit {
+            background: var(--accent-green);
+            box-shadow: 0 4px 0 #1e8449;
+        }
+
+        .pad-btn.clear {
+            background: var(--accent-red);
+            box-shadow: 0 4px 0 #922b21;
+        }
+
+        /* כפתור חזרה */
+        .back-btn {
+            background: transparent;
+            border: 2px solid #7f8c8d;
+            color: #bdc3c7;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: auto;
+        }
+
+        /* מאורת הדרקונים וחלונות קופצים */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 50;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 3px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .dragons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        @media (min-width: 500px) {
+            .dragons-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .dragon-card {
+            background: #1a2634;
+            border: 2px solid #34495e;
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dragon-card.unlocked {
+            border-color: var(--accent-gold);
+            background: linear-gradient(180deg, #2c3e50, #1a2634);
+        }
+
+        .dragon-img-box {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dragon-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .dragon-name {
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .dragon-count {
+            font-size: 0.85rem;
+            color: #bdc3c7;
+        }
+
+        .close-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="fish-meter" id="fishMeter">
+            <span class="fish-icon">🐟</span>
+            <span class="fish-icon">🐟</span>
+            <span class="fish-icon">🐟</span>
+            <span class="fish-icon">🐟</span>
+            <span class="fish-icon">🐟</span>
+        </div>
+        <button class="lair-btn" onclick="openLair()">
+            <span>🐉</span> מאורת הדרקונים (<span id="lairCount">0</span>)
+        </button>
+    </header>
+
+    <main>
+        <!-- מסך 1: בחירת מספר -->
+        <div id="homeScreen" class="screen active">
+            <div class="guide-box">
+                <div class="guide-avatar">⚔️</div>
+                <div class="guide-text">
+                    <strong>היקאפ:</strong> ״היי עומר! מוכן לאמן את הדרקונים שלנו היום? בחר על איזה מספר אנחנו מתאמנים עכשיו!״
+                </div>
+            </div>
+            <h2>בחר מספר לאימון:</h2>
+            <div class="numbers-grid" id="numbersGrid"></div>
+        </div>
+
+        <!-- מסך 2: זירת האימון -->
+        <div id="practiceScreen" class="screen">
+            <div class="stage-tabs">
+                <div class="stage-tab active" id="tab1" onclick="setStage(1)">1. המראה (דילוגים)</div>
+                <div class="stage-tab" id="tab2" onclick="setStage(2)">2. אימון אוויר</div>
+                <div class="stage-tab" id="tab3" onclick="setStage(3)">3. קרב בוס</div>
+            </div>
+
+            <div class="guide-box">
+                <div class="guide-avatar" id="stageAvatar">🐉</div>
+                <div class="guide-text" id="stageGuideText"></div>
+            </div>
+
+            <!-- תוכן שלב 1 -->
+            <div id="stage1Content">
+                <div class="visual-demo" id="visualDemo"></div>
+                <h3 style="margin: 12px 0;">לחץ על הכפולות של <span id="skipNumTitle"></span> לפי הסדר:</h3>
+                <div class="skip-grid" id="skipGrid"></div>
+            </div>
+
+            <!-- תוכן שלב 2 ו-3 -->
+            <div id="stage23Content" style="display: none;">
+                <div class="question-card">
+                    <div class="question-text" id="questionText">5 × 3 = ?</div>
+                    <div class="hint-box" id="hintBox"></div>
+                </div>
+
+                <!-- אפשרויות לשלב 2 -->
+                <div class="answers-grid" id="answersGrid"></div>
+
+                <!-- מקלדת לשלב 3 -->
+                <div class="numpad-container" id="numpadContainer" style="display: none;">
+                    <div class="numpad-display" id="numpadDisplay"></div>
+                    <div class="numpad-grid">
+                        <button class="pad-btn" onclick="pressPad('1')">1</button>
+                        <button class="pad-btn" onclick="pressPad('2')">2</button>
+                        <button class="pad-btn" onclick="pressPad('3')">3</button>
+                        <button class="pad-btn" onclick="pressPad('4')">4</button>
+                        <button class="pad-btn" onclick="pressPad('5')">5</button>
+                        <button class="pad-btn" onclick="pressPad('6')">6</button>
+                        <button class="pad-btn" onclick="pressPad('7')">7</button>
+                        <button class="pad-btn" onclick="pressPad('8')">8</button>
+                        <button class="pad-btn" onclick="pressPad('9')">9</button>
+                        <button class="pad-btn clear" onclick="pressPad('C')">מחק</button>
+                        <button class="pad-btn" onclick="pressPad('0')">0</button>
+                        <button class="pad-btn submit" onclick="submitPad()">אישור</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="back-btn" onclick="goHome()">⬅ בחר מספר אחר</button>
+        </div>
+    </main>
+
+    <!-- חלון קופץ: בקיעת דרקון חדש -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 כל הכבוד עומר! אספת 5 דגים! 🎉</h2>
+            <p>ביצת דרקון חדשה בקעה במאורה שלך:</p>
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
+                <div class="dragon-card unlocked" style="width: 200px; padding: 20px;">
+                    <div class="dragon-img-box" id="rewardImgBox" style="width: 130px; height: 130px;"></div>
+                    <div class="dragon-name" id="rewardName" style="font-size: 1.4rem;"></div>
+                    <div id="rewardDesc" style="font-size: 0.95rem; color: #ecf0f1;"></div>
+                </div>
+            </div>
+            <button class="close-btn" onclick="closeReward()">המשך באימון!</button>
+        </div>
+    </div>
+
+    <!-- חלון קופץ: מאורת הדרקונים -->
+    <div id="lairModal" class="modal">
+        <div class="modal-content">
+            <h2>🐉 מאורת הדרקונים של עומר 🐉</h2>
+            <p>כל 5 תשובות נכונות יפתחו לך דרקון נוסף!</p>
+            <div class="dragons-grid" id="dragonsGrid"></div>
+            <button class="close-btn" onclick="closeLair()">סגור מאורה</button>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           מאגר הדרקונים - כאן ניתן להחליף לנתיב מקומי בגיטהאב שלך
+           למשל להחליף את ה-img ל: 'images/toothless.png'
+           ========================================================= */
+        const DRAGONS_DB = [
+            {
+                id: 'toothless',
+                name: 'שום-שן (Toothless)',
+                desc: 'זעם הלילה - הדרקון המהיר והחכם ביותר!',
+                color: '#2c3e50',
+                emoji: '🖤🐉',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/6/67/Toothless_HTTYD3_transparent.png'
+            },
+            {
+                id: 'lightfury',
+                name: 'זעם האור (Light Fury)',
+                desc: 'נעלמת באור ויורה כדורי פלזמה מסנוורים!',
+                color: '#8e44ad',
+                emoji: '🤍🐉',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/2/22/Light_Fury_transparent.png'
+            },
+            {
+                id: 'stormfly',
+                name: 'סופה (Stormfly)',
+                desc: 'הדרקונית הקטלנית והנאמנה של אסטריד!',
+                color: '#2980b9',
+                emoji: '💙🦖',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/b/b5/Stormfly_transparent.png'
+            },
+            {
+                id: 'meatlug',
+                name: 'מיטלוג (Meatlug)',
+                desc: 'דרקונית הגרונקל החזקה שיורה לבה רותחת!',
+                color: '#d35400',
+                emoji: '🤎🪨',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/0/07/Meatlug_transparent.png'
+            },
+            {
+                id: 'hookfang',
+                name: 'הוקפאנג (Hookfang)',
+                desc: 'סיוט מפלצתי שעולה באש מכף רגל ועד ראש!',
+                color: '#c0392b',
+                emoji: '❤️🔥',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/d/d3/Hookfang_transparent.png'
+            },
+            {
+                id: 'barf_belch',
+                name: 'הרס וזעזוע (Barf & Belch)',
+                desc: 'דרקון דו-ראשי: ראש אחד פולט גז והשני מצית ניצוץ!',
+                color: '#27ae60',
+                emoji: '💚🐍',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/9/91/Barf_and_Belch_transparent.png'
+            },
+            {
+                id: 'cloudjumper',
+                name: 'קלאודג׳מפר (Cloudjumper)',
+                desc: 'דרקון בעל 4 כנפיים שמסתובבות כמו ינשוף!',
+                color: '#16a085',
+                emoji: '🦅🔥',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/5/53/Cloudjumper_transparent.png'
+            },
+            {
+                id: 'bewilderbeast',
+                name: 'חיית הפרא (Bewilderbeast)',
+                desc: 'מלך הדרקונים העצום שנושף קרח אדיר!',
+                color: '#34495e',
+                emoji: '❄️👑',
+                img: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/a/a2/Valka%27s_Bewilderbeast_transparent.png'
+            }
+        ];
+
+        // משתני מצב משחק
+        let currentNumber = 5;
+        let currentStage = 1;
+        let skipStep = 1;
+        let currentMultiplier = 1;
+        let currentAnswer = 0;
+        let typedValue = '';
+
+        // שמירה וטעינה מ-LocalStorage
+        let playerStats = JSON.parse(localStorage.getItem('omer_dragons_save')) || {
+            fish: 0,
+            dragons: {}
+        };
+
+        function saveGame() {
+            localStorage.setItem('omer_dragons_save', JSON.stringify(playerStats));
+            updateHeaderUI();
+        }
+
+        function updateHeaderUI() {
+            const fishes = document.querySelectorAll('.fish-icon');
+            fishes.forEach((f, idx) => {
+                if (idx < playerStats.fish) f.classList.add('active');
+                else f.classList.remove('active');
+            });
+
+            const totalCollected = Object.values(playerStats.dragons).reduce((a, b) => a + b, 0);
+            document.getElementById('lairCount').textContent = totalCollected;
+        }
+
+        // הוספת דג ובדיקה אם מגיע פרס (כל 5 תשובות נכונות)
+        function addFish() {
+            playerStats.fish++;
+            if (playerStats.fish >= 5) {
+                playerStats.fish = 0;
+                unlockRandomDragon();
+            }
+            saveGame();
+        }
+
+        function unlockRandomDragon() {
+            const randomDragon = DRAGONS_DB[Math.floor(Math.random() * DRAGONS_DB.length)];
+            if (!playerStats.dragons[randomDragon.id]) {
+                playerStats.dragons[randomDragon.id] = 0;
+            }
+            playerStats.dragons[randomDragon.id]++;
+            
+            const imgBox = document.getElementById('rewardImgBox');
+            imgBox.style.backgroundColor = randomDragon.color;
+            imgBox.innerHTML = createDragonImageHTML(randomDragon);
+            
+            document.getElementById('rewardName').textContent = randomDragon.name;
+            document.getElementById('rewardDesc').textContent = randomDragon.desc;
+            document.getElementById('rewardModal').classList.add('active');
+        }
+
+        function createDragonImageHTML(dragon) {
+            return `<img src="${dragon.img}" alt="${dragon.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${dragon.emoji}</span>';">`;
+        }
+
+        function closeReward() {
+            document.getElementById('rewardModal').classList.remove('active');
+        }
+
+        // אתחול מסך הבית
+        function initHome() {
+            const grid = document.getElementById('numbersGrid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'num-btn';
+                btn.textContent = i;
+                btn.onclick = () => startNumberPractice(i);
+                grid.appendChild(btn);
+            }
+            updateHeaderUI();
+        }
+
+        function startNumberPractice(num) {
+            currentNumber = num;
+            document.getElementById('homeScreen').classList.remove('active');
+            document.getElementById('practiceScreen').classList.add('active');
+            setStage(1);
+        }
+
+        function goHome() {
+            document.getElementById('practiceScreen').classList.remove('active');
+            document.getElementById('homeScreen').classList.add('active');
+        }
+
+        // מעבר בין 3 השלבים הפדגוגיים
+        function setStage(stage) {
+            currentStage = stage;
+            document.querySelectorAll('.stage-tab').forEach((t, idx) => {
+                t.classList.toggle('active', idx + 1 === stage);
+            });
+
+            const avatar = document.getElementById('stageAvatar');
+            const guideText = document.getElementById('stageGuideText');
+            const s1 = document.getElementById('stage1Content');
+            const s23 = document.getElementById('stage23Content');
+            const ansGrid = document.getElementById('answersGrid');
+            const numpad = document.getElementById('numpadContainer');
+
+            if (stage === 1) {
+                avatar.textContent = '⚔️';
+                guideText.innerHTML = `<strong>היקאפ:</strong> ״זכור עומר, כפל ב-<strong>${currentNumber}</strong> זה פשוט לחבר קבוצות של ${currentNumber} שוב ושוב! בוא נטיס את שום-שן בדילוגים!״`;
+                s1.style.display = 'block';
+                s23.style.display = 'none';
+                setupStage1();
+            } else if (stage === 2) {
+                avatar.textContent = '🛡️';
+                guideText.innerHTML = `<strong>אסטריד:</strong> ״עכשיו נראה אותך בפעולה! בחר את התשובה הנכונה לכפולות של <strong>${currentNumber}</strong>. אם תצטרך, אתן לך רמז!״`;
+                s1.style.display = 'none';
+                s23.style.display = 'block';
+                ansGrid.style.display = 'grid';
+                numpad.style.display = 'none';
+                nextQuestion();
+            } else if (stage === 3) {
+                avatar.textContent = '📖';
+                guideText.innerHTML = `<strong>פישלגס:</strong> ״קרב בוס! בלי אפשרויות לבחירה - הקלד את התשובה בעצמך במקלדת הדרקונים!״`;
+                s1.style.display = 'none';
+                s23.style.display = 'block';
+                ansGrid.style.display = 'none';
+                numpad.style.display = 'flex';
+                nextQuestion();
+            }
+        }
+
+        // שלב 1: חיבור חוזר ודילוגים
+        function setupStage1() {
+            skipStep = 1;
+            document.getElementById('skipNumTitle').textContent = currentNumber;
+            
+            // הדגמה ויזואלית של 3 סלים
+            const demo = document.getElementById('visualDemo');
+            const fishesStr = '🐟'.repeat(Math.min(currentNumber, 5)) + (currentNumber > 5 ? ` (${currentNumber})` : '');
+            demo.innerHTML = `
+                <div>למשל: <strong>${currentNumber} × 3</strong> זה 3 סלים ובתוך כל סל <strong>${currentNumber}</strong> דגים:</div>
+                <div class="baskets-row">
+                    <div class="basket">${fishesStr}<br><strong>${currentNumber}</strong></div>
+                    <div style="align-self:center; font-weight:bold;">+</div>
+                    <div class="basket">${fishesStr}<br><strong>${currentNumber}</strong></div>
+                    <div style="align-self:center; font-weight:bold;">+</div>
+                    <div class="basket">${fishesStr}<br><strong>${currentNumber}</strong></div>
+                    <div style="align-self:center; font-weight:bold;">= ${currentNumber * 3}</div>
+                </div>
+            `;
+
+            const grid = document.getElementById('skipGrid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const val = currentNumber * i;
+                const btn = document.createElement('button');
+                btn.className = 'skip-btn';
+                btn.textContent = val;
+                btn.onclick = () => handleSkipClick(i, btn);
+                grid.appendChild(btn);
+            }
+        }
+
+        function handleSkipClick(stepIndex, btnEl) {
+            if (stepIndex === skipStep) {
+                btnEl.classList.add('done');
+                skipStep++;
+                if (skipStep === 6 || skipStep === 11) {
+                    addFish(); // מתגמל בדג באמצע ובסוף המסלול
+                }
+                if (skipStep > 10) {
+                    setTimeout(() => {
+                        setStage(2);
+                    }, 600);
+                }
+            } else {
+                btnEl.style.backgroundColor = 'var(--accent-red)';
+                setTimeout(() => {
+                    if (!btnEl.classList.contains('done')) {
+                        btnEl.style.backgroundColor = 'var(--bg-card)';
+                    }
+                }, 400);
+            }
+        }
+
+        // שלבים 2 ו-3: מחולל שאלות
+        function nextQuestion() {
+            document.getElementById('hintBox').style.display = 'none';
+            currentMultiplier = Math.floor(Math.random() * 10) + 1;
+            currentAnswer = currentNumber * currentMultiplier;
+            
+            document.getElementById('questionText').textContent = `${currentNumber} × ${currentMultiplier} = ?`;
+
+            if (currentStage === 2) {
+                setupMultipleChoice();
+            } else {
+                typedValue = '';
+                document.getElementById('numpadDisplay').textContent = '?';
+            }
+        }
+
+        function setupMultipleChoice() {
+            const grid = document.getElementById('answersGrid');
+            grid.innerHTML = '';
+            
+            const options = new Set([currentAnswer]);
+            while (options.size < 4) {
+                const randMult = Math.floor(Math.random() * 10) + 1;
+                let wrongAns = currentNumber * randMult;
+                if (wrongAns === currentAnswer) {
+                    wrongAns = currentAnswer + (Math.random() > 0.5 ? currentNumber : -currentNumber);
+                }
+                if (wrongAns > 0) options.add(wrongAns);
+            }
+
+            const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
+            shuffled.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'ans-btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(opt, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, btnEl) {
+            if (selected === currentAnswer) {
+                if (btnEl) btnEl.style.backgroundColor = 'var(--accent-green)';
+                addFish();
+                setTimeout(nextQuestion, 500);
+            } else {
+                if (btnEl) btnEl.style.backgroundColor = 'var(--accent-red)';
+                showPedagogicalHint();
+            }
+        }
+
+        function showPedagogicalHint() {
+            const hintBox = document.getElementById('hintBox');
+            const additionStr = Array(currentMultiplier).fill(currentNumber).join(' + ');
+            hintBox.innerHTML = `
+                <strong>💡 רמז ויקינגי:</strong><br>
+                ${currentNumber} כפול ${currentMultiplier} זה בעצם לחבר את ${currentNumber} בדיוק ${currentMultiplier} פעמים:<br>
+                <span style="direction:ltr; display:inline-block; margin-top:4px; font-weight:bold; color:#fff;">${additionStr}</span>
+            `;
+            hintBox.style.display = 'block';
+        }
+
+        // מקלדת שלב 3
+        function pressPad(val) {
+            if (val === 'C') {
+                typedValue = '';
+            } else if (typedValue.length < 3) {
+                typedValue += val;
+            }
+            document.getElementById('numpadDisplay').textContent = typedValue || '?';
+        }
+
+        function submitPad() {
+            if (!typedValue) return;
+            const numVal = parseInt(typedValue, 10);
+            const display = document.getElementById('numpadDisplay');
+            
+            if (numVal === currentAnswer) {
+                display.style.backgroundColor = 'var(--accent-green)';
+                addFish();
+                setTimeout(() => {
+                    display.style.backgroundColor = '#111922';
+                    nextQuestion();
+                }, 500);
+            } else {
+                display.style.backgroundColor = 'var(--accent-red)';
+                showPedagogicalHint();
+                setTimeout(() => {
+                    display.style.backgroundColor = '#111922';
+                    typedValue = '';
+                    display.textContent = '?';
+                }, 600);
+            }
+        }
+
+        // מאורת הדרקונים
+        function openLair() {
+            const grid = document.getElementById('dragonsGrid');
+            grid.innerHTML = '';
+
+            DRAGONS_DB.forEach(dragon => {
+                const count = playerStats.dragons[dragon.id] || 0;
+                const unlocked = count > 0;
+                
+                const card = document.createElement('div');
+                card.className = 'dragon-card ' + (unlocked ? 'unlocked' : '');
+                
+                if (unlocked) {
+                    card.innerHTML = `
+                        <div class="dragon-img-box" style="background:${dragon.color}">
+                            ${createDragonImageHTML(dragon)}
+                        </div>
+                        <div class="dragon-name">${dragon.name}</div>
+                        <div class="dragon-count">נאסף: ${count} פעמים</div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="dragon-img-box" style="background:#111922">🔒</div>
+                        <div class="dragon-name" style="color:#7f8c8d">דרקון נעול</div>
+                        <div class="dragon-count">המשך להתאמן!</div>
+                    `;
+                }
+                grid.appendChild(card);
+            });
+
+            document.getElementById('lairModal').classList.add('active');
+        }
+
+        function closeLair() {
+            document.getElementById('lairModal').classList.remove('active');
+        }
+
+        // הפעלה ראשונית
+        initHome();
+    </script>
+</body>
+</html>
