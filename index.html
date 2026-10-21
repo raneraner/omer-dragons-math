@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="no-referrer">
-    <title>אקדמיית הדרקונים של עומר</title>
+    <title>משחק הכפל של עומר</title>
     <style>
         :root {
             --bg-dark: #121a23;
@@ -36,6 +36,53 @@
             overflow-x: hidden;
         }
 
+        /* מסך פתיחה */
+        #welcomeScreen {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #welcomeScreen.active { display: flex; }
+
+        .welcome-overlay {
+            background: rgba(11, 17, 22, 0.85);
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            margin: 0 0 30px 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            line-height: 1.1;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--accent-orange), #d35400);
+            color: white;
+            border: 3px solid white;
+            padding: 16px 32px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #a04000;
+            transition: transform 0.1s;
+        }
+        .start-btn:active { transform: translateY(6px); box-shadow: none; }
+
         /* סרגל עליון */
         header {
             background-color: #0b1116;
@@ -54,421 +101,194 @@
             border: 2px solid #7f8c8d;
             color: white;
             font-size: 1.4rem;
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
-        .gallery-btn {
+        .header-buttons { display: flex; gap: 8px; }
+
+        .nav-btn {
             background: linear-gradient(135deg, var(--accent-blue), #2980b9);
-            color: white;
-            border: 2px solid #85c1e9;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 0 #154360;
+            color: white; border: 2px solid #85c1e9;
+            padding: 8px 12px; border-radius: 12px;
+            font-weight: bold; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 4px 0 #154360;
         }
+        .nav-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        .gallery-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
+        main { flex: 1; padding: 16px; max-width: 700px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; }
 
-        main {
-            flex: 1;
-            padding: 16px;
-            max-width: 700px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen {
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-            flex: 1;
-        }
+        .screen { display: none; flex-direction: column; gap: 16px; flex: 1; }
         .screen.active { display: flex; }
 
         h1, h2, h3 { margin: 0; text-align: center; }
 
-        /* קופסת דמות משופרת - טקסט קצר וגדול, תמונה ממורכזת */
+        /* קופסת דמות */
         .guide-box {
             background-color: var(--bg-card);
             border: 2px solid var(--accent-gold);
             border-radius: 16px;
             padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            display: flex; align-items: center; gap: 16px;
         }
-
         .guide-avatar {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            background-color: #2c3e50; /* רקע ניטרלי למקרה של שקיפות */
-            border: 3px solid var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            flex-shrink: 0;
-            overflow: hidden;
+            width: 75px; height: 75px; border-radius: 50%;
+            background-color: #2c3e50; border: 3px solid var(--accent-gold);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; flex-shrink: 0; overflow: hidden;
         }
+        .guide-avatar img { width: 90%; height: 90%; object-fit: contain; }
+        .guide-text { font-size: 1.4rem; font-weight: bold; line-height: 1.2; }
 
-        .guide-avatar img {
-            width: 90%;
-            height: 90%;
-            object-fit: contain; /* שומר שהראש לא ייחתך */
-            object-position: center;
-        }
-
-        .guide-text {
-            font-size: 1.4rem; /* פונט הרבה יותר גדול */
-            font-weight: bold;
-            line-height: 1.2;
-        }
-
-        /* רשת המספרים במסך הבית */
+        /* רשת מספרים במסך הבית */
         .numbers-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-top: 10px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px;
         }
-        @media (max-width: 500px) {
-            .numbers-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        @media (max-width: 500px) { .numbers-grid { grid-template-columns: repeat(2, 1fr); } }
 
         .num-btn {
-            background: var(--bg-card);
-            border: 3px solid var(--accent-blue);
-            color: white;
-            font-size: 2.2rem;
-            font-weight: bold;
-            padding: 20px 10px;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #1f618d;
+            background: var(--bg-card); border: 3px solid var(--accent-blue);
+            color: white; font-size: 2.2rem; font-weight: bold;
+            padding: 20px 10px; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #1f618d;
         }
-        .num-btn:active {
-            transform: translateY(6px);
-            box-shadow: none;
-        }
+        .num-btn:active { transform: translateY(6px); box-shadow: none; }
 
-        /* ניווט שלבים */
-        .stage-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
+        /* ניווט שלבים שמות חדשים */
+        .stage-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
         .stage-tab {
-            flex: 1;
-            padding: 12px 6px;
-            background: #0b1116;
-            border: 2px solid #34495e;
-            color: #7f8c8d;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1rem;
-            text-align: center;
-            cursor: pointer;
+            flex: 1; padding: 12px 4px; background: #0b1116;
+            border: 2px solid #34495e; color: #7f8c8d; border-radius: 10px;
+            font-weight: bold; font-size: 0.9rem; text-align: center; cursor: pointer;
         }
-        .stage-tab.active {
-            background: var(--accent-blue);
-            color: white;
-            border-color: white;
-        }
+        .stage-tab.active { background: var(--accent-blue); color: white; border-color: white; }
 
-        /* בר התקדמות חשיפת פוסטר */
+        /* בר התקדמות פוסטר (40 חלקים) */
         .poster-progress-container {
-            background: #0b1116;
-            border-radius: 10px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #34495e;
+            background: #0b1116; border-radius: 10px; padding: 8px;
+            display: flex; align-items: center; gap: 10px; border: 1px solid #34495e;
         }
-        .progress-bar-bg {
-            flex: 1;
-            height: 12px;
-            background: #1f2c3a;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--accent-green);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        .progress-text {
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--accent-gold);
-            min-width: 50px;
+        .progress-bar-bg { flex: 1; height: 14px; background: #1f2c3a; border-radius: 7px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.3s ease; }
+        .progress-text { font-size: 1rem; font-weight: bold; color: var(--accent-gold); min-width: 55px; }
+        
+        .view-puzzle-btn {
+            background: var(--accent-orange); color: white; border: none;
+            padding: 6px 10px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer;
         }
 
-        /* שלב 1: סדרה אקטיבית */
+        /* שלב 1: סדרה משמאל לימין (LTR) */
         .sequence-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 16px 0;
-            min-height: 120px;
-            align-items: center;
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+            margin: 16px 0; min-height: 100px; align-items: center;
+            direction: ltr; /* מפתח פה - מסדר את האלמנטים משמאל לימין */
         }
         .seq-box {
-            background: var(--accent-blue);
-            color: white;
-            font-size: 1.8rem;
-            font-weight: bold;
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 2px solid #85c1e9;
-            box-shadow: 0 4px 0 #154360;
+            background: var(--accent-blue); color: white; font-size: 2rem;
+            font-weight: bold; padding: 12px 18px; border-radius: 12px;
+            border: 2px solid #85c1e9; box-shadow: 0 4px 0 #154360;
         }
-        .seq-arrow {
-            color: var(--accent-gold);
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+        .seq-arrow { color: var(--accent-gold); font-size: 2rem; font-weight: bold; margin: 0 4px; }
         .seq-target {
-            background: var(--bg-card);
-            color: var(--accent-gold);
-            border: 3px dashed var(--accent-gold);
-            font-size: 2rem;
-            min-width: 70px;
-            text-align: center;
+            background: var(--bg-card); color: var(--accent-gold);
+            border: 3px dashed var(--accent-gold); min-width: 80px; text-align: center;
         }
 
-        /* שלב 2: שאלות ורמזים */
+        /* שאלות */
         .question-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 24px 16px;
-            text-align: center;
-            border: 3px solid #34495e;
-            margin: 4px 0;
+            background: var(--bg-card); border-radius: 20px; padding: 24px 16px;
+            text-align: center; border: 3px solid #34495e; margin: 4px 0;
         }
-        .question-text {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: var(--accent-gold);
-            direction: ltr;
-        }
+        .question-text { font-size: 3.5rem; font-weight: bold; color: var(--accent-gold); direction: ltr; }
         .hint-box {
-            margin-top: 16px;
-            padding: 12px;
-            background: rgba(231, 76, 60, 0.15);
-            border: 2px solid var(--accent-red);
-            border-radius: 12px;
-            font-size: 1.2rem;
-            display: none;
+            margin-top: 16px; padding: 12px; background: rgba(231, 76, 60, 0.15);
+            border: 2px solid var(--accent-red); border-radius: 12px; font-size: 1.2rem; display: none;
         }
 
-        .answers-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
+        .answers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         .ans-btn {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 20px;
-            font-size: 2.2rem;
-            font-weight: bold;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #1f618d;
+            background: var(--accent-blue); color: white; border: none; padding: 20px;
+            font-size: 2.2rem; font-weight: bold; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #1f618d;
         }
-        .ans-btn:active {
-            transform: translateY(6px);
-            box-shadow: none;
-        }
+        .ans-btn:active { transform: translateY(6px); box-shadow: none; }
 
-        /* מקלדת (לשלב 1 ו-3) */
+        /* מקלדת וירטואלית */
         .numpad-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 380px;
-            margin: 8px auto 0 auto;
-            width: 100%;
+            display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 8px auto 0 auto; width: 100%;
         }
         .numpad-display {
-            background: #0b1116;
-            border: 2px solid var(--accent-gold);
-            border-radius: 12px;
-            height: 60px;
-            font-size: 2.5rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            background: #0b1116; border: 2px solid var(--accent-gold); border-radius: 12px;
+            height: 60px; font-size: 2.5rem; font-weight: bold; display: flex; align-items: center; justify-content: center; color: white;
         }
-        .numpad-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            direction: ltr;
-        }
+        .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; direction: ltr; }
         .pad-btn {
-            background: #34495e;
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 5px 0 #1a252f;
+            background: #34495e; color: white; border: none; padding: 16px;
+            font-size: 1.8rem; font-weight: bold; border-radius: 12px; cursor: pointer; box-shadow: 0 5px 0 #1a252f;
         }
-        .pad-btn:active {
-            transform: translateY(5px);
-            box-shadow: none;
-        }
+        .pad-btn:active { transform: translateY(5px); box-shadow: none; }
         .pad-btn.submit { background: var(--accent-green); box-shadow: 0 5px 0 #1e8449; }
         .pad-btn.clear { background: var(--accent-red); box-shadow: 0 5px 0 #922b21; }
 
         .back-btn {
-            background: transparent;
-            border: 2px solid #7f8c8d;
-            color: #bdc3c7;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
+            background: transparent; border: 2px solid #7f8c8d; color: #bdc3c7;
+            padding: 12px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px;
         }
 
-        /* מודלים ופוסטרים */
+        /* מודלים של פאזלים */
         .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 50;
-            padding: 20px;
-            overflow-y: auto;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+            z-index: 50; padding: 20px; overflow-y: auto; align-items: center; justify-content: center;
         }
         .modal.active { display: flex; }
-        
         .modal-content {
-            background: var(--bg-card);
-            border: 3px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            position: relative;
+            background: var(--bg-card); border: 3px solid var(--accent-gold);
+            border-radius: 20px; padding: 20px; width: 100%; max-width: 800px; text-align: center; position: relative;
         }
 
-        /* גלריית פוסטרים */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-top: 20px;
-        }
+        /* גלריה ומסגרת פוסטר */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }
         @media (min-width: 600px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .poster-frame {
-            border: 3px solid #34495e;
-            border-radius: 12px;
-            background: #0b1116;
-            overflow: hidden;
-            position: relative;
-            aspect-ratio: 2/3;
-            display: flex;
-            flex-direction: column;
+            border: 3px solid #34495e; border-radius: 12px; background: #0b1116;
+            position: relative; aspect-ratio: 2/3; display: flex; flex-direction: column; overflow: hidden;
         }
-        .poster-frame.unlocked { border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); }
+        .poster-frame.unlocked { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(241, 196, 15, 0.5); }
         
-        .poster-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
-        }
-
+        .poster-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        
         .poster-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
+            position: absolute; inset: 0; background: rgba(0,0,0,0.8);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;
         }
-        .poster-overlay-title {
-            font-size: 2.5rem;
-            color: rgba(255,255,255,0.2);
-            font-weight: bold;
-        }
+        .poster-overlay-title { font-size: 3rem; color: rgba(255,255,255,0.3); font-weight: bold; }
 
-        /* רשת אריחים לשבירה */
+        /* רשת חלקי הפאזל (8x5) - 40 חלקים אקראיים */
         .tiles-grid {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(5, 1fr);
+            position: absolute; inset: -1px; display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 עמודות (הפוסטר אנכי, עדיף 5x8) */
+            grid-template-rows: repeat(8, 1fr); /* 8 שורות. סה"כ 40 */
             z-index: 3;
+            gap: 1px;
         }
-        .puzzle-tile {
-            background: #2c3e50;
-            border: 1px solid #1a252f;
-            transition: opacity 0.3s, transform 0.3s;
+        
+        .puzzle-piece {
+            background: #2c3e50; border: 1px solid #1a252f;
+            transition: opacity 0.4s, transform 0.4s;
+            /* סגנון שהופך אותם למעין חתיכות פאזל אורגניות באמצעות CSS */
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
-        .puzzle-tile.broken {
-            opacity: 0;
-            transform: scale(0.5);
-            pointer-events: none;
-        }
+        .puzzle-piece.broken { opacity: 0; transform: scale(0.3) rotate(20deg); pointer-events: none; }
 
         .close-btn {
-            background: var(--accent-red);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 0 #922b21;
+            background: var(--accent-red); color: white; border: none; padding: 12px 30px;
+            font-size: 1.3rem; font-weight: bold; border-radius: 12px; cursor: pointer;
+            margin-top: 20px; box-shadow: 0 4px 0 #922b21;
         }
         .close-btn:active { transform: translateY(4px); box-shadow: none; }
 
         /* קונפטי */
-        .confetti {
-            position: fixed; width: 12px; height: 12px; z-index: 100;
-            animation: fall linear forwards;
-        }
+        .confetti { position: fixed; width: 12px; height: 12px; z-index: 100; animation: fall linear forwards; }
         @keyframes fall {
             0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
@@ -477,14 +297,23 @@
 </head>
 <body>
 
-    <header>
+    <!-- מסך פתיחה -->
+    <div id="welcomeScreen" class="screen active">
+        <div class="welcome-overlay">
+            <h1 class="welcome-title">משחק הכפל<br>של עומר</h1>
+            <button class="start-btn" onclick="startApp()">התחל משחק 🐉</button>
+        </div>
+    </div>
+
+    <!-- סרגל עליון נסתר בהתחלה -->
+    <header id="mainHeader" style="display: none;">
         <button class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
-        <button class="gallery-btn" onclick="openGallery()">
-            🖼️ גלריית הפוסטרים
-        </button>
+        <div class="header-buttons">
+            <button class="nav-btn" onclick="openGallery()">🖼️ גלריה</button>
+        </div>
     </header>
 
-    <main>
+    <main id="mainApp" style="display: none;">
         <!-- מסך 1: בחירת מספר -->
         <div id="homeScreen" class="screen active">
             <div class="guide-box">
@@ -497,17 +326,18 @@
         <!-- מסך 2: זירת האימון -->
         <div id="practiceScreen" class="screen">
             <div class="stage-tabs">
-                <div class="stage-tab active" id="tab1" onclick="setStage(1)">1. הסדרה</div>
-                <div class="stage-tab" id="tab2" onclick="setStage(2)">2. תשובות</div>
-                <div class="stage-tab" id="tab3" onclick="setStage(3)">3. הקלדה</div>
+                <div class="stage-tab active" id="tab1" onclick="setStage(1)">1. מסלול המראה</div>
+                <div class="stage-tab" id="tab2" onclick="setStage(2)">2. אימון מטרות</div>
+                <div class="stage-tab" id="tab3" onclick="setStage(3)">3. קרב בוס</div>
             </div>
 
+            <!-- התקדמות והצגת פאזל בזמן אמת -->
             <div class="poster-progress-container">
-                <div>🖼️</div>
+                <button class="view-puzzle-btn" onclick="viewCurrentPuzzle()">👀 הצץ בפאזל</button>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" id="posterProgressBar"></div>
                 </div>
-                <div class="progress-text" id="posterProgressText">0/20</div>
+                <div class="progress-text" id="posterProgressText">0/40</div>
             </div>
 
             <div class="guide-box">
@@ -515,12 +345,12 @@
                 <div class="guide-text" id="stageGuideText"></div>
             </div>
 
-            <!-- שלב 1: סדרה אקטיבית -->
+            <!-- שלב 1: סדרה משמאל לימין (חימום) -->
             <div id="stage1Content" style="display: none;">
                 <div class="sequence-container" id="sequenceContainer"></div>
             </div>
 
-            <!-- שלב 2: אמריקאי -->
+            <!-- שלב 2: שאלות אמריקאיות -->
             <div id="stage2Content" style="display: none;">
                 <div class="question-card">
                     <div class="question-text" id="questionText2">?</div>
@@ -529,14 +359,14 @@
                 <div class="answers-grid" id="answersGrid"></div>
             </div>
 
-            <!-- שלב 3 (ו-1): שאלת הקלדה -->
+            <!-- שלב 3: הקלדה -->
             <div id="stage3Content" style="display: none;">
                 <div class="question-card">
                     <div class="question-text" id="questionText3">?</div>
                 </div>
             </div>
 
-            <!-- מקלדת וירטואלית משותפת לשלב 1 ולשלב 3 -->
+            <!-- מקלדת וירטואלית (לשלב 1 ו-3) -->
             <div class="numpad-container" id="numpadContainer" style="display: none;">
                 <div class="numpad-display" id="numpadDisplay">?</div>
                 <div class="numpad-grid">
@@ -559,20 +389,29 @@
         </div>
     </main>
 
-    <!-- גלריית פוסטרים -->
-    <div id="galleryModal" class="modal">
-        <div class="modal-content">
-            <h2>🖼️ הפוסטרים הסודיים 🖼️</h2>
-            <div class="gallery-grid" id="galleryGrid"></div>
-            <button class="close-btn" onclick="closeGallery()">סגור</button>
+    <!-- מודל צפייה בפאזל בודד תוך כדי משחק -->
+    <div id="singlePuzzleModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; margin: 0 auto;">
+            <h2 id="singlePuzzleTitle">מצב הפאזל הנוכחי</h2>
+            <div id="singlePuzzleContainer" style="margin: 20px auto; width: 280px;"></div>
+            <button class="close-btn" onclick="closeSinglePuzzle()">חזור לאימון</button>
         </div>
     </div>
 
-    <!-- הודעת פוסטר נחשף -->
+    <!-- מודל גלריית פוסטרים -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <h2>🖼️ הגלריה של עומר 🖼️</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+            <button class="close-btn" onclick="closeGallery()">סגור גלריה</button>
+        </div>
+    </div>
+
+    <!-- הודעת ניצחון -->
     <div id="posterRevealModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
             <h1 style="font-size: 2.5rem; color: var(--accent-gold);">🎉 מדהים! 🎉</h1>
-            <h2>חשפת את הפוסטר של <span id="revealNumberSpan"></span>!</h2>
+            <h2>חשפת את כל 40 החלקים של <span id="revealNumberSpan"></span>!</h2>
             <div class="poster-frame unlocked" style="margin: 20px auto; width: 250px;">
                 <img class="poster-image" id="revealPosterImg" src="">
             </div>
@@ -581,19 +420,13 @@
     </div>
 
     <script>
-        /* 
-           הגדרות תמונות: 
-           כדי שהכל יעבוד חלק לגמרי, שמור בתיקיית הגיטהאב שלך את הקבצים הבאים:
-           1. hiccup.png, astrid.png, fishlegs.png (למדריכים).
-           2. poster1.jpg, poster2.jpg ... poster10.jpg (הפוסטרים של המספרים).
-        */
         const GUIDES_DB = {
             hiccup: { name: 'היקאפ', emoji: '⚔️', img: 'hiccup.png', fallback: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/8/87/Hiccup_HTTYD3_transparent.png' },
             astrid: { name: 'אסטריד', emoji: '🛡️', img: 'astrid.png', fallback: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/5/5c/Astrid_HTTYD3_transparent.png' },
             fishlegs: { name: 'פישלגס', emoji: '📖', img: 'fishlegs.png', fallback: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/6/63/Fishlegs_HTTYD3_transparent.png' }
         };
 
-        const TOTAL_TILES = 20;
+        const TOTAL_TILES = 40; // 5x8 רשת
         
         let audioCtx = null;
         let isMuted = false;
@@ -619,8 +452,7 @@
             const now = audioCtx.currentTime;
 
             if (type === 'pop') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+                const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                 osc.type = 'sine'; osc.frequency.setValueAtTime(450, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
                 gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
                 osc.connect(gain); gain.connect(audioCtx.destination);
@@ -665,20 +497,40 @@
             }
         }
 
-        let playerStats = JSON.parse(localStorage.getItem('omer_posters_save_v2')) || { posters: {} };
-        // אתחול 0 לכל מספר אם לא קיים
-        for(let i=1; i<=10; i++) { if(playerStats.posters[i] === undefined) playerStats.posters[i] = 0; }
+        // טעינת נתונים - מפתח חדש כדי למנוע בעיות עם ה-20 חלקים הקודמים
+        let playerStats = JSON.parse(localStorage.getItem('omer_posters_v4')) || { posters: {} };
+        for (let i = 1; i <= 10; i++) {
+            if (!playerStats.posters[i]) {
+                // יצירת מערך מעורבב של 40 מיקומים (0 עד 39)
+                let order = Array.from({length: TOTAL_TILES}, (_, k) => k);
+                for (let j = order.length - 1; j > 0; j--) {
+                    const k = Math.floor(Math.random() * (j + 1));
+                    [order[j], order[k]] = [order[k], order[j]];
+                }
+                playerStats.posters[i] = { revealed: 0, order: order };
+            }
+        }
 
         let currentNumber = 5;
         let currentStage = 1;
-        
-        // משתני סדרה (שלב 1)
         let seqCurrentMultiplier = 2; 
-
-        // משתני שאלות (שלב 2 ו-3)
         let currentMultiplier = 1;
         let currentAnswer = 0;
         let typedValue = '';
+
+        // מסך הפתיחה מתחיל עם רקע רנדומלי
+        window.onload = () => {
+            const randPoster = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('welcomeScreen').style.backgroundImage = `url('poster${randPoster}.jpg')`;
+        };
+
+        function startApp() {
+            playSound('pop');
+            document.getElementById('welcomeScreen').classList.remove('active');
+            document.getElementById('mainHeader').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'flex';
+            initHome();
+        }
 
         function renderGuideAvatar(elementId, guideKey) {
             const guide = GUIDES_DB[guideKey];
@@ -688,22 +540,23 @@
         }
 
         function saveGame() {
-            localStorage.setItem('omer_posters_save_v2', JSON.stringify(playerStats));
+            localStorage.setItem('omer_posters_v4', JSON.stringify(playerStats));
             updateProgressBar();
         }
 
         function updateProgressBar() {
-            const progress = playerStats.posters[currentNumber];
-            const count = Math.min(progress, TOTAL_TILES);
+            const stat = playerStats.posters[currentNumber];
+            const count = Math.min(stat.revealed, TOTAL_TILES);
             document.getElementById('posterProgressText').textContent = `${count}/${TOTAL_TILES}`;
             document.getElementById('posterProgressBar').style.width = `${(count / TOTAL_TILES) * 100}%`;
         }
 
         function addProgress() {
-            if (playerStats.posters[currentNumber] < TOTAL_TILES) {
-                playerStats.posters[currentNumber]++;
+            const stat = playerStats.posters[currentNumber];
+            if (stat.revealed < TOTAL_TILES) {
+                stat.revealed++;
                 saveGame();
-                if (playerStats.posters[currentNumber] === TOTAL_TILES) {
+                if (stat.revealed === TOTAL_TILES) {
                     setTimeout(() => showPosterReveal(), 400);
                 }
             }
@@ -713,14 +566,10 @@
             playSound('fanfare');
             launchConfetti();
             document.getElementById('revealNumberSpan').textContent = currentNumber;
-            // מנסה לטעון את הפוסטר המקומי
             document.getElementById('revealPosterImg').src = `poster${currentNumber}.jpg`;
             document.getElementById('posterRevealModal').classList.add('active');
         }
-
-        function closePosterReveal() {
-            document.getElementById('posterRevealModal').classList.remove('active');
-        }
+        function closePosterReveal() { document.getElementById('posterRevealModal').classList.remove('active'); }
 
         function initHome() {
             renderGuideAvatar('homeAvatar', 'hiccup');
@@ -730,8 +579,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'num-btn';
                 btn.textContent = i;
-                // סממן אם הפוסטר הושלם
-                if (playerStats.posters[i] >= TOTAL_TILES) {
+                if (playerStats.posters[i].revealed >= TOTAL_TILES) {
                     btn.innerHTML = `${i} <span style="font-size:1rem">⭐</span>`;
                     btn.style.borderColor = 'var(--accent-gold)';
                 }
@@ -752,7 +600,7 @@
             playSound('pop');
             document.getElementById('practiceScreen').classList.remove('active');
             document.getElementById('homeScreen').classList.add('active');
-            initHome(); // לעדכן כוכבים
+            initHome();
         }
 
         function setStage(stage) {
@@ -767,32 +615,27 @@
             const s3 = document.getElementById('stage3Content');
             const numpad = document.getElementById('numpadContainer');
 
-            s1.style.display = 'none';
-            s2.style.display = 'none';
-            s3.style.display = 'none';
-            numpad.style.display = 'none';
+            s1.style.display = 'none'; s2.style.display = 'none'; s3.style.display = 'none'; numpad.style.display = 'none';
 
             if (stage === 1) {
                 renderGuideAvatar('stageAvatar', 'hiccup');
-                guideText.textContent = `השלם את הסדרה:`;
-                s1.style.display = 'block';
-                numpad.style.display = 'flex';
+                guideText.textContent = `חימום למסלול:`;
+                s1.style.display = 'block'; numpad.style.display = 'flex';
                 setupStage1();
             } else if (stage === 2) {
                 renderGuideAvatar('stageAvatar', 'astrid');
-                guideText.textContent = `בחר את התשובה:`;
+                guideText.textContent = `בחר מטרה:`;
                 s2.style.display = 'block';
                 nextQuestion();
             } else if (stage === 3) {
                 renderGuideAvatar('stageAvatar', 'fishlegs');
                 guideText.textContent = `הקלד את התשובה:`;
-                s3.style.display = 'block';
-                numpad.style.display = 'flex';
+                s3.style.display = 'block'; numpad.style.display = 'flex';
                 nextQuestion();
             }
         }
 
-        // ================= שלב 1: סדרה אקטיבית =================
+        // ================= שלב 1: חימום LTR =================
         function setupStage1() {
             seqCurrentMultiplier = 2;
             typedValue = '';
@@ -804,7 +647,7 @@
             const container = document.getElementById('sequenceContainer');
             container.innerHTML = '';
             
-            // מראה את הקודמים (עד 3 אחרונים כדי לא להעמיס את המסך)
+            // הכנסת אלמנטים לפי סדר הגיוני: המספר הקטן משמאל ואז ימינה
             let start = Math.max(1, seqCurrentMultiplier - 2);
             
             for (let i = start; i < seqCurrentMultiplier; i++) {
@@ -819,7 +662,6 @@
                 container.appendChild(arrow);
             }
 
-            // תיבת היעד
             const target = document.createElement('div');
             target.className = 'seq-box seq-target';
             target.textContent = '?';
@@ -836,7 +678,7 @@
             if (numVal === currentAnswer) {
                 display.style.backgroundColor = 'var(--accent-green)';
                 playSound('success');
-                addProgress();
+                // שים לב: שלב 1 הוא חימום - אין כאן addProgress()
                 
                 setTimeout(() => {
                     display.style.backgroundColor = '#0b1116';
@@ -845,7 +687,7 @@
                     display.textContent = '?';
                     
                     if (seqCurrentMultiplier > 10) {
-                        setStage(2); // סיים את הסדרה, עובר לשלב 2
+                        setStage(2);
                     } else {
                         renderSequence();
                     }
@@ -855,18 +697,16 @@
                 playSound('error');
                 setTimeout(() => {
                     display.style.backgroundColor = '#0b1116';
-                    typedValue = '';
-                    display.textContent = '?';
+                    typedValue = ''; display.textContent = '?';
                 }, 500);
             }
         }
 
-        // ================= שלבים 2 ו-3: שאלות =================
+        // ================= שלבים 2 ו-3 =================
         function nextQuestion() {
             document.getElementById('hintBox').style.display = 'none';
             currentMultiplier = Math.floor(Math.random() * 10) + 1;
             currentAnswer = currentNumber * currentMultiplier;
-            
             const qText = `${currentNumber} × ${currentMultiplier} = ?`;
             
             if (currentStage === 2) {
@@ -874,8 +714,7 @@
                 setupMultipleChoice();
             } else {
                 document.getElementById('questionText3').textContent = qText;
-                typedValue = '';
-                document.getElementById('numpadDisplay').textContent = '?';
+                typedValue = ''; document.getElementById('numpadDisplay').textContent = '?';
             }
         }
 
@@ -887,22 +726,19 @@
             while (options.size < 4) {
                 const randMult = Math.floor(Math.random() * 10) + 1;
                 let wrongAns = currentNumber * randMult;
-                if (wrongAns === currentAnswer) {
-                    wrongAns = currentAnswer + (Math.random() > 0.5 ? currentNumber : -currentNumber);
-                }
+                if (wrongAns === currentAnswer) wrongAns = currentAnswer + (Math.random() > 0.5 ? currentNumber : -currentNumber);
                 if (wrongAns > 0) options.add(wrongAns);
             }
 
             const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
             shuffled.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = 'ans-btn';
-                btn.textContent = opt;
+                btn.className = 'ans-btn'; btn.textContent = opt;
                 btn.onclick = () => {
                     if (opt === currentAnswer) {
                         btn.style.backgroundColor = 'var(--accent-green)';
                         playSound('success');
-                        addProgress();
+                        addProgress(); // חושף חלק מהפאזל
                         setTimeout(nextQuestion, 500);
                     } else {
                         btn.style.backgroundColor = 'var(--accent-red)';
@@ -929,7 +765,7 @@
             if (numVal === currentAnswer) {
                 display.style.backgroundColor = 'var(--accent-green)';
                 playSound('success');
-                addProgress();
+                addProgress(); // חושף חלק מהפאזל
                 setTimeout(() => {
                     display.style.backgroundColor = '#0b1116';
                     nextQuestion();
@@ -939,8 +775,7 @@
                 playSound('error');
                 setTimeout(() => {
                     display.style.backgroundColor = '#0b1116';
-                    typedValue = '';
-                    display.textContent = '?';
+                    typedValue = ''; display.textContent = '?';
                 }, 500);
             }
         }
@@ -952,61 +787,84 @@
             else if (typedValue.length < 3) typedValue += val;
             document.getElementById('numpadDisplay').textContent = typedValue || '?';
         }
-
         function submitPad() {
             if (currentStage === 1) checkStage1();
             else if (currentStage === 3) checkStage3();
         }
 
-        // ================= גלריית פוסטרים =================
+        // ================= בניית פוסטרים וגלריה =================
+        function buildPosterElement(num) {
+            const stat = playerStats.posters[num];
+            const frame = document.createElement('div');
+            frame.className = `poster-frame ${stat.revealed >= TOTAL_TILES ? 'unlocked' : ''}`;
+            
+            const img = document.createElement('img');
+            img.className = 'poster-image';
+            img.src = `poster${num}.jpg`;
+            img.onerror = function() { this.style.display = 'none'; };
+            frame.appendChild(img);
+
+            if (stat.revealed < TOTAL_TILES) {
+                const overlay = document.createElement('div');
+                overlay.className = 'poster-overlay';
+                overlay.innerHTML = `<div class="poster-overlay-title">${num}</div>`;
+                frame.appendChild(overlay);
+                
+                const tilesGrid = document.createElement('div');
+                tilesGrid.className = 'tiles-grid';
+                
+                // בונים 40 אריחים
+                for (let t = 0; t < TOTAL_TILES; t++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'puzzle-piece';
+                    
+                    // אלגוריתם ליצירת צורות מעוגלות אקראיות שנותנות תחושה של חלקי פאזל
+                    const radii = [
+                        Math.random() > 0.5 ? '40%' : '5%',
+                        Math.random() > 0.5 ? '40%' : '5%',
+                        Math.random() > 0.5 ? '40%' : '5%',
+                        Math.random() > 0.5 ? '40%' : '5%'
+                    ].join(' ');
+                    tile.style.borderRadius = radii;
+
+                    // מזהים אם האריח הספציפי הזה כבר נחשף לפי מערך ה-order
+                    // stat.order מחזיק את סדר השבירה. נבדוק אם t מופיע ב-X המקומות הראשונים
+                    const breakOrderIndex = stat.order.indexOf(t);
+                    if (breakOrderIndex < stat.revealed) {
+                        tile.classList.add('broken');
+                    }
+                    tilesGrid.appendChild(tile);
+                }
+                frame.appendChild(tilesGrid);
+            }
+            return frame;
+        }
+
         function openGallery() {
             playSound('pop');
             const grid = document.getElementById('galleryGrid');
             grid.innerHTML = '';
-
             for (let i = 1; i <= 10; i++) {
-                const progress = playerStats.posters[i];
-                const frame = document.createElement('div');
-                frame.className = `poster-frame ${progress >= TOTAL_TILES ? 'unlocked' : ''}`;
-                
-                // תמונת הפוסטר
-                const img = document.createElement('img');
-                img.className = 'poster-image';
-                img.src = `poster${i}.jpg`; // דורש לשמור קבצים אלו
-                img.onerror = function() { this.style.display = 'none'; };
-                frame.appendChild(img);
-
-                // מספר הפוסטר במרכז אם לא הושלם
-                if (progress < TOTAL_TILES) {
-                    const overlay = document.createElement('div');
-                    overlay.className = 'poster-overlay';
-                    overlay.innerHTML = `<div class="poster-overlay-title">${i}</div>`;
-                    frame.appendChild(overlay);
-                    
-                    // בניית האריחים שמסתירים
-                    const tilesGrid = document.createElement('div');
-                    tilesGrid.className = 'tiles-grid';
-                    for (let t = 0; t < TOTAL_TILES; t++) {
-                        const tile = document.createElement('div');
-                        tile.className = 'puzzle-tile';
-                        // אם האריח הזה נחשף לפי ההתקדמות, נשבור אותו מיד
-                        if (t < progress) tile.classList.add('broken');
-                        tilesGrid.appendChild(tile);
-                    }
-                    frame.appendChild(tilesGrid);
-                }
-
-                grid.appendChild(frame);
+                grid.appendChild(buildPosterElement(i));
             }
             document.getElementById('galleryModal').classList.add('active');
         }
+        function closeGallery() { playSound('pop'); document.getElementById('galleryModal').classList.remove('active'); }
 
-        function closeGallery() {
+        // כפתור תצוגת הפאזל הבודד בזמן האימון
+        function viewCurrentPuzzle() {
             playSound('pop');
-            document.getElementById('galleryModal').classList.remove('active');
+            const container = document.getElementById('singlePuzzleContainer');
+            container.innerHTML = '';
+            document.getElementById('singlePuzzleTitle').textContent = `ההתקדמות של מספר ${currentNumber}`;
+            container.appendChild(buildPosterElement(currentNumber));
+            document.getElementById('singlePuzzleModal').classList.add('active');
+        }
+        function closeSinglePuzzle() {
+            playSound('pop');
+            document.getElementById('singlePuzzleModal').classList.remove('active');
         }
 
-        initHome();
     </script>
 </body>
 </html>
