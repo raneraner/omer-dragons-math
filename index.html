@@ -38,71 +38,40 @@
 
         /* מסך פתיחה */
         #welcomeScreen {
-            position: fixed;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            z-index: 100;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; background-size: cover; background-position: center;
+            z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center;
         }
-
         #welcomeScreen.active { display: flex; }
 
         .welcome-overlay {
-            background: rgba(11, 17, 22, 0.85);
-            padding: 40px 20px;
-            border-radius: 20px;
-            text-align: center;
-            border: 3px solid var(--accent-gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            background: rgba(11, 17, 22, 0.85); padding: 40px 20px; border-radius: 20px;
+            text-align: center; border: 3px solid var(--accent-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
         }
 
         .welcome-title {
-            font-size: 3.5rem;
-            color: var(--accent-gold);
-            margin: 0 0 30px 0;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            line-height: 1.1;
+            font-size: 3.5rem; color: var(--accent-gold); margin: 0 0 30px 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5); line-height: 1.1;
         }
 
         .start-btn {
             background: linear-gradient(135deg, var(--accent-orange), #d35400);
-            color: white;
-            border: 3px solid white;
-            padding: 16px 32px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #a04000;
-            transition: transform 0.1s;
+            color: white; border: 3px solid white; padding: 16px 32px;
+            font-size: 1.8rem; font-weight: bold; border-radius: 16px; cursor: pointer;
+            box-shadow: 0 6px 0 #a04000; transition: transform 0.1s;
         }
         .start-btn:active { transform: translateY(6px); box-shadow: none; }
 
         /* סרגל עליון */
         header {
-            background-color: #0b1116;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--accent-orange);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            background-color: #0b1116; padding: 12px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent-orange);
+            position: sticky; top: 0; z-index: 10;
         }
 
         .mute-btn {
-            background: var(--bg-card);
-            border: 2px solid #7f8c8d;
-            color: white;
-            font-size: 1.4rem;
-            width: 44px; height: 44px;
-            border-radius: 50%;
+            background: var(--bg-card); border: 2px solid #7f8c8d; color: white;
+            font-size: 1.4rem; width: 44px; height: 44px; border-radius: 50%;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
@@ -110,10 +79,8 @@
 
         .nav-btn {
             background: linear-gradient(135deg, var(--accent-blue), #2980b9);
-            color: white; border: 2px solid #85c1e9;
-            padding: 8px 12px; border-radius: 12px;
-            font-weight: bold; font-size: 1rem;
-            cursor: pointer; box-shadow: 0 4px 0 #154360;
+            color: white; border: 2px solid #85c1e9; padding: 8px 12px; border-radius: 12px;
+            font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 0 #154360;
         }
         .nav-btn:active { transform: translateY(4px); box-shadow: none; }
 
@@ -121,77 +88,67 @@
 
         .screen { display: none; flex-direction: column; gap: 16px; flex: 1; }
         .screen.active { display: flex; }
-
         h1, h2, h3 { margin: 0; text-align: center; }
 
         /* קופסת דמות */
         .guide-box {
-            background-color: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            border-radius: 16px;
-            padding: 10px 14px;
-            display: flex; align-items: center; gap: 16px;
+            background-color: var(--bg-card); border: 2px solid var(--accent-gold);
+            border-radius: 16px; padding: 10px 14px; display: flex; align-items: center; gap: 16px;
         }
         .guide-avatar {
-            width: 75px; height: 75px; border-radius: 50%;
-            background-color: #2c3e50; border: 3px solid var(--accent-gold);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; flex-shrink: 0; overflow: hidden;
+            width: 75px; height: 75px; border-radius: 50%; background-color: #2c3e50;
+            border: 3px solid var(--accent-gold); display: flex; align-items: center;
+            justify-content: center; font-size: 2.5rem; flex-shrink: 0; overflow: hidden;
         }
         .guide-avatar img { width: 90%; height: 90%; object-fit: contain; }
         .guide-text { font-size: 1.4rem; font-weight: bold; line-height: 1.2; }
 
         /* רשת מספרים במסך הבית */
-        .numbers-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px;
-        }
+        .numbers-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px; }
         @media (max-width: 500px) { .numbers-grid { grid-template-columns: repeat(2, 1fr); } }
 
         .num-btn {
             background: var(--bg-card); border: 3px solid var(--accent-blue);
-            color: white; font-size: 2.2rem; font-weight: bold;
-            padding: 20px 10px; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #1f618d;
+            color: white; font-size: 2.2rem; font-weight: bold; padding: 20px 10px;
+            border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #1f618d;
         }
         .num-btn:active { transform: translateY(6px); box-shadow: none; }
 
-        /* ניווט שלבים שמות חדשים */
+        /* ניווט שלבים */
         .stage-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
         .stage-tab {
-            flex: 1; padding: 12px 4px; background: #0b1116;
-            border: 2px solid #34495e; color: #7f8c8d; border-radius: 10px;
-            font-weight: bold; font-size: 0.9rem; text-align: center; cursor: pointer;
+            flex: 1; padding: 12px 4px; background: #0b1116; border: 2px solid #34495e;
+            color: #7f8c8d; border-radius: 10px; font-weight: bold; font-size: 0.9rem; text-align: center; cursor: pointer;
         }
         .stage-tab.active { background: var(--accent-blue); color: white; border-color: white; }
 
-        /* בר התקדמות פוסטר (40 חלקים) */
+        /* בר התקדמות פוסטר */
         .poster-progress-container {
-            background: #0b1116; border-radius: 10px; padding: 8px;
-            display: flex; align-items: center; gap: 10px; border: 1px solid #34495e;
+            background: #0b1116; border-radius: 10px; padding: 8px; display: flex;
+            align-items: center; gap: 10px; border: 1px solid #34495e;
         }
         .progress-bar-bg { flex: 1; height: 14px; background: #1f2c3a; border-radius: 7px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.3s ease; }
         .progress-text { font-size: 1rem; font-weight: bold; color: var(--accent-gold); min-width: 55px; }
         
         .view-puzzle-btn {
-            background: var(--accent-orange); color: white; border: none;
-            padding: 6px 10px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer;
+            background: var(--accent-orange); color: white; border: none; padding: 6px 10px;
+            border-radius: 8px; font-weight: bold; font-size: 0.9rem; cursor: pointer;
         }
 
-        /* שלב 1: סדרה משמאל לימין (LTR) */
+        /* שלב 1 */
         .sequence-container {
             display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-            margin: 16px 0; min-height: 100px; align-items: center;
-            direction: ltr; /* מפתח פה - מסדר את האלמנטים משמאל לימין */
+            margin: 16px 0; min-height: 100px; align-items: center; direction: ltr;
         }
         .seq-box {
-            background: var(--accent-blue); color: white; font-size: 2rem;
-            font-weight: bold; padding: 12px 18px; border-radius: 12px;
-            border: 2px solid #85c1e9; box-shadow: 0 4px 0 #154360;
+            background: var(--accent-blue); color: white; font-size: 2rem; font-weight: bold;
+            padding: 12px 18px; border-radius: 12px; border: 2px solid #85c1e9; box-shadow: 0 4px 0 #154360;
         }
         .seq-arrow { color: var(--accent-gold); font-size: 2rem; font-weight: bold; margin: 0 4px; }
         .seq-target {
-            background: var(--bg-card); color: var(--accent-gold);
-            border: 3px dashed var(--accent-gold); min-width: 80px; text-align: center;
+            background: var(--bg-card); color: var(--accent-gold); border: 3px dashed var(--accent-gold);
+            min-width: 80px; text-align: center;
         }
 
         /* שאלות */
@@ -212,18 +169,16 @@
         }
         .ans-btn:active { transform: translateY(6px); box-shadow: none; }
 
-        /* מקלדת וירטואלית */
-        .numpad-container {
-            display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 8px auto 0 auto; width: 100%;
-        }
+        /* מקלדת */
+        .numpad-container { display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 8px auto 0 auto; width: 100%; }
         .numpad-display {
             background: #0b1116; border: 2px solid var(--accent-gold); border-radius: 12px;
             height: 60px; font-size: 2.5rem; font-weight: bold; display: flex; align-items: center; justify-content: center; color: white;
         }
         .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; direction: ltr; }
         .pad-btn {
-            background: #34495e; color: white; border: none; padding: 16px;
-            font-size: 1.8rem; font-weight: bold; border-radius: 12px; cursor: pointer; box-shadow: 0 5px 0 #1a252f;
+            background: #34495e; color: white; border: none; padding: 16px; font-size: 1.8rem;
+            font-weight: bold; border-radius: 12px; cursor: pointer; box-shadow: 0 5px 0 #1a252f;
         }
         .pad-btn:active { transform: translateY(5px); box-shadow: none; }
         .pad-btn.submit { background: var(--accent-green); box-shadow: 0 5px 0 #1e8449; }
@@ -234,7 +189,7 @@
             padding: 12px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px;
         }
 
-        /* מודלים של פאזלים */
+        /* מודלים */
         .modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
             z-index: 50; padding: 20px; overflow-y: auto; align-items: center; justify-content: center;
@@ -242,8 +197,17 @@
         .modal.active { display: flex; }
         .modal-content {
             background: var(--bg-card); border: 3px solid var(--accent-gold);
-            border-radius: 20px; padding: 20px; width: 100%; max-width: 800px; text-align: center; position: relative;
+            border-radius: 20px; padding: 40px 20px 20px 20px; width: 100%; max-width: 800px; text-align: center; position: relative;
         }
+
+        /* כפתור סגירה מרחף באייפון */
+        .modal-close-icon {
+            position: absolute; top: 15px; left: 15px; background: var(--accent-red);
+            color: white; border: none; border-radius: 50%; width: 36px; height: 36px;
+            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 0 #922b21; z-index: 10;
+        }
+        .modal-close-icon:active { transform: translateY(4px); box-shadow: none; }
 
         /* גלריה ומסגרת פוסטר */
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }
@@ -254,45 +218,30 @@
             position: relative; aspect-ratio: 2/3; display: flex; flex-direction: column; overflow: hidden;
         }
         .poster-frame.unlocked { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(241, 196, 15, 0.5); }
-        
         .poster-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         
-      .poster-overlay {
-    position: absolute; inset: 0; background: transparent;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;
-}
-   .poster-overlay-title { 
-    font-size: 3rem; 
-    color: rgba(255,255,255,0.8); 
-    font-weight: bold; 
-    text-shadow: 0 0 15px rgba(0,0,0,1); 
-}
+        .poster-overlay {
+            position: absolute; inset: 0; background: transparent; display: flex;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 2;
+        }
+        .poster-overlay-title { font-size: 3rem; color: rgba(255,255,255,0.8); font-weight: bold; text-shadow: 0 0 15px rgba(0,0,0,1); }
 
-        /* רשת חלקי הפאזל (8x5) - 40 חלקים אקראיים */
         .tiles-grid {
             position: absolute; inset: -1px; display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 עמודות (הפוסטר אנכי, עדיף 5x8) */
-            grid-template-rows: repeat(8, 1fr); /* 8 שורות. סה"כ 40 */
-            z-index: 3;
-            gap: 1px;
+            grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(8, 1fr); z-index: 3; gap: 1px;
         }
-        
         .puzzle-piece {
             background: #2c3e50; border: 1px solid #1a252f;
-            transition: opacity 0.4s, transform 0.4s;
-            /* סגנון שהופך אותם למעין חתיכות פאזל אורגניות באמצעות CSS */
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            transition: opacity 0.4s, transform 0.4s; box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
         .puzzle-piece.broken { opacity: 0; transform: scale(0.3) rotate(20deg); pointer-events: none; }
 
         .close-btn {
             background: var(--accent-red); color: white; border: none; padding: 12px 30px;
-            font-size: 1.3rem; font-weight: bold; border-radius: 12px; cursor: pointer;
-            margin-top: 20px; box-shadow: 0 4px 0 #922b21;
+            font-size: 1.3rem; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 0 #922b21;
         }
         .close-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        /* קונפטי */
         .confetti { position: fixed; width: 12px; height: 12px; z-index: 100; animation: fall linear forwards; }
         @keyframes fall {
             0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
@@ -310,7 +259,6 @@
         </div>
     </div>
 
-    <!-- סרגל עליון נסתר בהתחלה -->
     <header id="mainHeader" style="display: none;">
         <button class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
         <div class="header-buttons">
@@ -319,7 +267,6 @@
     </header>
 
     <main id="mainApp" style="display: none;">
-        <!-- מסך 1: בחירת מספר -->
         <div id="homeScreen" class="screen active">
             <div class="guide-box">
                 <div class="guide-avatar" id="homeAvatar"></div>
@@ -328,7 +275,6 @@
             <div class="numbers-grid" id="numbersGrid"></div>
         </div>
 
-        <!-- מסך 2: זירת האימון -->
         <div id="practiceScreen" class="screen">
             <div class="stage-tabs">
                 <div class="stage-tab active" id="tab1" onclick="setStage(1)">1. מסלול המראה</div>
@@ -336,12 +282,9 @@
                 <div class="stage-tab" id="tab3" onclick="setStage(3)">3. קרב בוס</div>
             </div>
 
-            <!-- התקדמות והצגת פאזל בזמן אמת -->
             <div class="poster-progress-container">
                 <button class="view-puzzle-btn" onclick="viewCurrentPuzzle()">👀 הצץ בפאזל</button>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="posterProgressBar"></div>
-                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="posterProgressBar"></div></div>
                 <div class="progress-text" id="posterProgressText">0/40</div>
             </div>
 
@@ -350,12 +293,10 @@
                 <div class="guide-text" id="stageGuideText"></div>
             </div>
 
-            <!-- שלב 1: סדרה משמאל לימין (חימום) -->
             <div id="stage1Content" style="display: none;">
                 <div class="sequence-container" id="sequenceContainer"></div>
             </div>
 
-            <!-- שלב 2: שאלות אמריקאיות -->
             <div id="stage2Content" style="display: none;">
                 <div class="question-card">
                     <div class="question-text" id="questionText2">?</div>
@@ -364,14 +305,12 @@
                 <div class="answers-grid" id="answersGrid"></div>
             </div>
 
-            <!-- שלב 3: הקלדה -->
             <div id="stage3Content" style="display: none;">
                 <div class="question-card">
                     <div class="question-text" id="questionText3">?</div>
                 </div>
             </div>
 
-            <!-- מקלדת וירטואלית (לשלב 1 ו-3) -->
             <div class="numpad-container" id="numpadContainer" style="display: none;">
                 <div class="numpad-display" id="numpadDisplay">?</div>
                 <div class="numpad-grid">
@@ -394,9 +333,10 @@
         </div>
     </main>
 
-    <!-- מודל צפייה בפאזל בודד תוך כדי משחק -->
+    <!-- הצגת פאזל בודד -->
     <div id="singlePuzzleModal" class="modal">
         <div class="modal-content" style="max-width: 400px; margin: 0 auto;">
+            <button class="modal-close-icon" onclick="closeSinglePuzzle()">✖</button>
             <h2 id="singlePuzzleTitle">מצב הפאזל הנוכחי</h2>
             <div id="singlePuzzleContainer" style="margin: 20px auto; width: 280px;"></div>
             <button class="close-btn" onclick="closeSinglePuzzle()">חזור לאימון</button>
@@ -406,15 +346,16 @@
     <!-- מודל גלריית פוסטרים -->
     <div id="galleryModal" class="modal">
         <div class="modal-content">
+            <button class="modal-close-icon" onclick="closeGallery()">✖</button>
             <h2>🖼️ הגלריה של עומר 🖼️</h2>
             <div class="gallery-grid" id="galleryGrid"></div>
             <button class="close-btn" onclick="closeGallery()">סגור גלריה</button>
         </div>
     </div>
 
-    <!-- הודעת ניצחון -->
     <div id="posterRevealModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close-icon" onclick="closePosterReveal()">✖</button>
             <h1 style="font-size: 2.5rem; color: var(--accent-gold);">🎉 מדהים! 🎉</h1>
             <h2>חשפת את כל 40 החלקים של <span id="revealNumberSpan"></span>!</h2>
             <div class="poster-frame unlocked" style="margin: 20px auto; width: 250px;">
@@ -431,10 +372,8 @@
             fishlegs: { name: 'פישלגס', emoji: '📖', img: 'fishlegs.png', fallback: 'https://static.wikia.nocookie.net/howtotrainyourdragon/images/6/63/Fishlegs_HTTYD3_transparent.png' }
         };
 
-        const TOTAL_TILES = 40; // 5x8 רשת
-        
-        let audioCtx = null;
-        let isMuted = false;
+        const TOTAL_TILES = 40; 
+        let audioCtx = null; let isMuted = false;
 
         function initAudio() {
             if (!audioCtx) {
@@ -445,45 +384,37 @@
         }
 
         function toggleMute() {
-            isMuted = !isMuted;
-            document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
+            isMuted = !isMuted; document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
             if (!isMuted) playSound('pop');
         }
 
         function playSound(type) {
-            if (isMuted) return;
-            initAudio();
-            if (!audioCtx) return;
+            if (isMuted) return; initAudio(); if (!audioCtx) return;
             const now = audioCtx.currentTime;
-
             if (type === 'pop') {
                 const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                 osc.type = 'sine'; osc.frequency.setValueAtTime(450, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
                 gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(now); osc.stop(now + 0.1);
+                osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.1);
             } else if (type === 'success') {
                 [523.25, 659.25, 880.00].forEach((freq, idx) => {
                     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                     osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + idx * 0.08);
                     gain.gain.setValueAtTime(0.2, now + idx * 0.08); gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.2);
+                    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.2);
                 });
             } else if (type === 'error') {
                 const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                 osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); osc.frequency.linearRampToValueAtTime(100, now + 0.2);
                 gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(now); osc.stop(now + 0.2);
+                osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.2);
             } else if (type === 'fanfare') {
                 const notes = [{ f: 523.25, t: 0, d: 0.15 }, { f: 659.25, t: 0.15, d: 0.15 }, { f: 783.99, t: 0.3, d: 0.15 }, { f: 1046.50, t: 0.45, d: 0.5 }];
                 notes.forEach(n => {
                     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                     osc.type = 'triangle'; osc.frequency.setValueAtTime(n.f, now + n.t);
                     gain.gain.setValueAtTime(0.3, now + n.t); gain.gain.exponentialRampToValueAtTime(0.01, now + n.t + n.d);
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(now + n.t); osc.stop(now + n.t + n.d);
+                    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + n.t); osc.stop(now + n.t + n.d);
                 });
             }
         }
@@ -491,22 +422,16 @@
         function launchConfetti() {
             const colors = ['#f1c40f', '#e67e22', '#2ecc71', '#3498db', '#e74c3c'];
             for (let i = 0; i < 50; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
-                conf.style.animationDelay = (Math.random() * 0.2) + 's';
-                document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 3500);
+                const conf = document.createElement('div'); conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw'; conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's'; conf.style.animationDelay = (Math.random() * 0.2) + 's';
+                document.body.appendChild(conf); setTimeout(() => conf.remove(), 3500);
             }
         }
 
-        // טעינת נתונים - מפתח חדש כדי למנוע בעיות עם ה-20 חלקים הקודמים
         let playerStats = JSON.parse(localStorage.getItem('omer_posters_v4')) || { posters: {} };
         for (let i = 1; i <= 10; i++) {
             if (!playerStats.posters[i]) {
-                // יצירת מערך מעורבב של 40 מיקומים (0 עד 39)
                 let order = Array.from({length: TOTAL_TILES}, (_, k) => k);
                 for (let j = order.length - 1; j > 0; j--) {
                     const k = Math.floor(Math.random() * (j + 1));
@@ -516,42 +441,34 @@
             }
         }
 
-        let currentNumber = 5;
-        let currentStage = 1;
-        let seqCurrentMultiplier = 2; 
-        let currentMultiplier = 1;
-        let currentAnswer = 0;
-        let typedValue = '';
+        let currentNumber = 5; let currentStage = 1;
+        let seqCurrentMultiplier = 2; let currentMultiplier = 1;
+        let currentAnswer = 0; let typedValue = '';
+        
+        // תורי שאלות למניעת כפילויות
+        let queueStage2 = []; let queueStage3 = [];
 
-        // מסך הפתיחה מתחיל עם רקע רנדומלי
         window.onload = () => {
             const randPoster = Math.floor(Math.random() * 10) + 1;
             document.getElementById('welcomeScreen').style.backgroundImage = `url('poster${randPoster}.jpg')`;
         };
 
         function startApp() {
-            playSound('pop');
-            document.getElementById('welcomeScreen').classList.remove('active');
+            playSound('pop'); document.getElementById('welcomeScreen').classList.remove('active');
             document.getElementById('mainHeader').style.display = 'flex';
-            document.getElementById('mainApp').style.display = 'flex';
-            initHome();
+            document.getElementById('mainApp').style.display = 'flex'; initHome();
         }
 
         function renderGuideAvatar(elementId, guideKey) {
-            const guide = GUIDES_DB[guideKey];
-            const el = document.getElementById(elementId);
+            const guide = GUIDES_DB[guideKey]; const el = document.getElementById(elementId);
             if (!el || !guide) return;
             el.innerHTML = `<img src="${guide.img}" alt="${guide.name}" referrerpolicy="no-referrer" onerror="this.src='${guide.fallback}'; this.onerror=function(){this.style.display='none'; this.parentElement.innerHTML='<span>${guide.emoji}</span>';}">`;
         }
 
-        function saveGame() {
-            localStorage.setItem('omer_posters_v4', JSON.stringify(playerStats));
-            updateProgressBar();
-        }
+        function saveGame() { localStorage.setItem('omer_posters_v4', JSON.stringify(playerStats)); updateProgressBar(); }
 
         function updateProgressBar() {
-            const stat = playerStats.posters[currentNumber];
-            const count = Math.min(stat.revealed, TOTAL_TILES);
+            const stat = playerStats.posters[currentNumber]; const count = Math.min(stat.revealed, TOTAL_TILES);
             document.getElementById('posterProgressText').textContent = `${count}/${TOTAL_TILES}`;
             document.getElementById('posterProgressBar').style.width = `${(count / TOTAL_TILES) * 100}%`;
         }
@@ -559,17 +476,13 @@
         function addProgress() {
             const stat = playerStats.posters[currentNumber];
             if (stat.revealed < TOTAL_TILES) {
-                stat.revealed++;
-                saveGame();
-                if (stat.revealed === TOTAL_TILES) {
-                    setTimeout(() => showPosterReveal(), 400);
-                }
+                stat.revealed++; saveGame();
+                if (stat.revealed === TOTAL_TILES) setTimeout(() => showPosterReveal(), 400);
             }
         }
 
         function showPosterReveal() {
-            playSound('fanfare');
-            launchConfetti();
+            playSound('fanfare'); launchConfetti();
             document.getElementById('revealNumberSpan').textContent = currentNumber;
             document.getElementById('revealPosterImg').src = `poster${currentNumber}.jpg`;
             document.getElementById('posterRevealModal').classList.add('active');
@@ -577,24 +490,28 @@
         function closePosterReveal() { document.getElementById('posterRevealModal').classList.remove('active'); }
 
         function initHome() {
-            renderGuideAvatar('homeAvatar', 'hiccup');
-            const grid = document.getElementById('numbersGrid');
-            grid.innerHTML = '';
+            renderGuideAvatar('homeAvatar', 'hiccup'); const grid = document.getElementById('numbersGrid'); grid.innerHTML = '';
             for (let i = 1; i <= 10; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'num-btn';
-                btn.textContent = i;
+                const btn = document.createElement('button'); btn.className = 'num-btn'; btn.textContent = i;
                 if (playerStats.posters[i].revealed >= TOTAL_TILES) {
-                    btn.innerHTML = `${i} <span style="font-size:1rem">⭐</span>`;
-                    btn.style.borderColor = 'var(--accent-gold)';
+                    btn.innerHTML = `${i} <span style="font-size:1rem">⭐</span>`; btn.style.borderColor = 'var(--accent-gold)';
                 }
-                btn.onclick = () => { playSound('pop'); startNumberPractice(i); };
-                grid.appendChild(btn);
+                btn.onclick = () => { playSound('pop'); startNumberPractice(i); }; grid.appendChild(btn);
             }
+        }
+
+        function generateStageQueue() {
+            let set1 = [1,2,3,4,5,6,7,8,9,10].sort(() => Math.random() - 0.5);
+            let set2 = [1,2,3,4,5,6,7,8,9,10].sort(() => Math.random() - 0.5);
+            // מונע חזרה רצופה במעבר בין הסטים
+            if (set1[9] === set2[0]) { [set2[0], set2[1]] = [set2[1], set2[0]]; }
+            return set1.concat(set2);
         }
 
         function startNumberPractice(num) {
             currentNumber = num;
+            queueStage2 = generateStageQueue();
+            queueStage3 = generateStageQueue();
             updateProgressBar();
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('practiceScreen').classList.add('active');
@@ -602,131 +519,88 @@
         }
 
         function goHome() {
-            playSound('pop');
-            document.getElementById('practiceScreen').classList.remove('active');
-            document.getElementById('homeScreen').classList.add('active');
-            initHome();
+            playSound('pop'); document.getElementById('practiceScreen').classList.remove('active');
+            document.getElementById('homeScreen').classList.add('active'); initHome();
         }
 
         function setStage(stage) {
             currentStage = stage;
-            document.querySelectorAll('.stage-tab').forEach((t, idx) => {
-                t.classList.toggle('active', idx + 1 === stage);
-            });
-
+            document.querySelectorAll('.stage-tab').forEach((t, idx) => { t.classList.toggle('active', idx + 1 === stage); });
             const guideText = document.getElementById('stageGuideText');
-            const s1 = document.getElementById('stage1Content');
-            const s2 = document.getElementById('stage2Content');
-            const s3 = document.getElementById('stage3Content');
-            const numpad = document.getElementById('numpadContainer');
+            const s1 = document.getElementById('stage1Content'); const s2 = document.getElementById('stage2Content');
+            const s3 = document.getElementById('stage3Content'); const numpad = document.getElementById('numpadContainer');
 
             s1.style.display = 'none'; s2.style.display = 'none'; s3.style.display = 'none'; numpad.style.display = 'none';
 
             if (stage === 1) {
-                renderGuideAvatar('stageAvatar', 'hiccup');
-                guideText.textContent = `חימום למסלול:`;
-                s1.style.display = 'block'; numpad.style.display = 'flex';
-                setupStage1();
+                renderGuideAvatar('stageAvatar', 'hiccup'); guideText.textContent = `חימום למסלול:`;
+                s1.style.display = 'block'; numpad.style.display = 'flex'; setupStage1();
             } else if (stage === 2) {
-                renderGuideAvatar('stageAvatar', 'astrid');
-                guideText.textContent = `בחר מטרה:`;
-                s2.style.display = 'block';
-                nextQuestion();
+                renderGuideAvatar('stageAvatar', 'astrid'); guideText.textContent = `בחר מטרה:`;
+                s2.style.display = 'block'; nextQuestion();
             } else if (stage === 3) {
-                renderGuideAvatar('stageAvatar', 'fishlegs');
-                guideText.textContent = `הקלד את התשובה:`;
-                s3.style.display = 'block'; numpad.style.display = 'flex';
-                nextQuestion();
+                renderGuideAvatar('stageAvatar', 'fishlegs'); guideText.textContent = `הקלד את התשובה:`;
+                s3.style.display = 'block'; numpad.style.display = 'flex'; nextQuestion();
             }
         }
 
-        // ================= שלב 1: חימום LTR =================
+        // --- שלב 1 ---
         function setupStage1() {
-            seqCurrentMultiplier = 2;
-            typedValue = '';
-            document.getElementById('numpadDisplay').textContent = '?';
-            renderSequence();
+            seqCurrentMultiplier = 2; typedValue = ''; document.getElementById('numpadDisplay').textContent = '?'; renderSequence();
         }
 
         function renderSequence() {
-            const container = document.getElementById('sequenceContainer');
-            container.innerHTML = '';
-            
-            // הכנסת אלמנטים לפי סדר הגיוני: המספר הקטן משמאל ואז ימינה
+            const container = document.getElementById('sequenceContainer'); container.innerHTML = '';
             let start = Math.max(1, seqCurrentMultiplier - 2);
-            
             for (let i = start; i < seqCurrentMultiplier; i++) {
-                const box = document.createElement('div');
-                box.className = 'seq-box';
-                box.textContent = currentNumber * i;
-                container.appendChild(box);
-                
-                const arrow = document.createElement('div');
-                arrow.className = 'seq-arrow';
-                arrow.textContent = '➔';
-                container.appendChild(arrow);
+                const box = document.createElement('div'); box.className = 'seq-box'; box.textContent = currentNumber * i; container.appendChild(box);
+                const arrow = document.createElement('div'); arrow.className = 'seq-arrow'; arrow.textContent = '➔'; container.appendChild(arrow);
             }
-
-            const target = document.createElement('div');
-            target.className = 'seq-box seq-target';
-            target.textContent = '?';
-            container.appendChild(target);
-            
+            const target = document.createElement('div'); target.className = 'seq-box seq-target'; target.textContent = '?'; container.appendChild(target);
             currentAnswer = currentNumber * seqCurrentMultiplier;
         }
 
         function checkStage1() {
             if (!typedValue) return;
-            const numVal = parseInt(typedValue, 10);
-            const display = document.getElementById('numpadDisplay');
-            
+            const numVal = parseInt(typedValue, 10); const display = document.getElementById('numpadDisplay');
             if (numVal === currentAnswer) {
-                display.style.backgroundColor = 'var(--accent-green)';
-                playSound('success');
-                // שים לב: שלב 1 הוא חימום - אין כאן addProgress()
-                
+                display.style.backgroundColor = 'var(--accent-green)'; playSound('success');
                 setTimeout(() => {
-                    display.style.backgroundColor = '#0b1116';
-                    seqCurrentMultiplier++;
-                    typedValue = '';
-                    display.textContent = '?';
-                    
-                    if (seqCurrentMultiplier > 10) {
-                        setStage(2);
-                    } else {
-                        renderSequence();
-                    }
+                    display.style.backgroundColor = '#0b1116'; seqCurrentMultiplier++; typedValue = ''; display.textContent = '?';
+                    if (seqCurrentMultiplier > 10) setStage(2); else renderSequence();
                 }, 500);
             } else {
-                display.style.backgroundColor = 'var(--accent-red)';
-                playSound('error');
-                setTimeout(() => {
-                    display.style.backgroundColor = '#0b1116';
-                    typedValue = ''; display.textContent = '?';
-                }, 500);
+                display.style.backgroundColor = 'var(--accent-red)'; playSound('error');
+                setTimeout(() => { display.style.backgroundColor = '#0b1116'; typedValue = ''; display.textContent = '?'; }, 500);
             }
         }
 
-        // ================= שלבים 2 ו-3 =================
+        // --- שלבים 2 ו-3 ---
         function nextQuestion() {
             document.getElementById('hintBox').style.display = 'none';
-            currentMultiplier = Math.floor(Math.random() * 10) + 1;
+            let activeQueue = currentStage === 2 ? queueStage2 : queueStage3;
+            
+            if (activeQueue.length === 0) {
+                // המערך התרוקן - סיימנו את 20 השאלות של השלב הזה
+                if (currentStage === 2) {
+                    setStage(3); // מעבר אוטומטי לשלב 3
+                }
+                return;
+            }
+
+            currentMultiplier = activeQueue[0]; // מציג את השאלה הבאה בתור (אבל לא מוחק עדיין)
             currentAnswer = currentNumber * currentMultiplier;
             const qText = `${currentNumber} × ${currentMultiplier} = ?`;
             
             if (currentStage === 2) {
-                document.getElementById('questionText2').textContent = qText;
-                setupMultipleChoice();
+                document.getElementById('questionText2').textContent = qText; setupMultipleChoice();
             } else {
-                document.getElementById('questionText3').textContent = qText;
-                typedValue = ''; document.getElementById('numpadDisplay').textContent = '?';
+                document.getElementById('questionText3').textContent = qText; typedValue = ''; document.getElementById('numpadDisplay').textContent = '?';
             }
         }
 
         function setupMultipleChoice() {
-            const grid = document.getElementById('answersGrid');
-            grid.innerHTML = '';
-            
+            const grid = document.getElementById('answersGrid'); grid.innerHTML = '';
             const options = new Set([currentAnswer]);
             while (options.size < 4) {
                 const randMult = Math.floor(Math.random() * 10) + 1;
@@ -734,21 +608,16 @@
                 if (wrongAns === currentAnswer) wrongAns = currentAnswer + (Math.random() > 0.5 ? currentNumber : -currentNumber);
                 if (wrongAns > 0) options.add(wrongAns);
             }
-
             const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
             shuffled.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'ans-btn'; btn.textContent = opt;
+                const btn = document.createElement('button'); btn.className = 'ans-btn'; btn.textContent = opt;
                 btn.onclick = () => {
                     if (opt === currentAnswer) {
-                        btn.style.backgroundColor = 'var(--accent-green)';
-                        playSound('success');
-                        addProgress(); // חושף חלק מהפאזל
-                        setTimeout(nextQuestion, 500);
+                        btn.style.backgroundColor = 'var(--accent-green)'; playSound('success');
+                        queueStage2.shift(); // מוחק את השאלה מהתור רק כשהתשובה נכונה
+                        addProgress(); setTimeout(nextQuestion, 500);
                     } else {
-                        btn.style.backgroundColor = 'var(--accent-red)';
-                        playSound('error');
-                        showHint();
+                        btn.style.backgroundColor = 'var(--accent-red)'; playSound('error'); showHint();
                     }
                 };
                 grid.appendChild(btn);
@@ -756,88 +625,48 @@
         }
 
         function showHint() {
-            const hintBox = document.getElementById('hintBox');
-            const additionStr = Array(currentMultiplier).fill(currentNumber).join(' + ');
+            const hintBox = document.getElementById('hintBox'); const additionStr = Array(currentMultiplier).fill(currentNumber).join(' + ');
             hintBox.innerHTML = `<strong>רמז:</strong><br><span style="direction:ltr; display:inline-block; font-weight:bold; font-size:1.5rem;">${additionStr}</span>`;
             hintBox.style.display = 'block';
         }
 
         function checkStage3() {
             if (!typedValue) return;
-            const numVal = parseInt(typedValue, 10);
-            const display = document.getElementById('numpadDisplay');
-            
+            const numVal = parseInt(typedValue, 10); const display = document.getElementById('numpadDisplay');
             if (numVal === currentAnswer) {
-                display.style.backgroundColor = 'var(--accent-green)';
-                playSound('success');
-                addProgress(); // חושף חלק מהפאזל
-                setTimeout(() => {
-                    display.style.backgroundColor = '#0b1116';
-                    nextQuestion();
-                }, 500);
+                display.style.backgroundColor = 'var(--accent-green)'; playSound('success');
+                queueStage3.shift(); // מוחק את השאלה מהתור רק כשהתשובה נכונה
+                addProgress(); 
+                setTimeout(() => { display.style.backgroundColor = '#0b1116'; nextQuestion(); }, 500);
             } else {
-                display.style.backgroundColor = 'var(--accent-red)';
-                playSound('error');
-                setTimeout(() => {
-                    display.style.backgroundColor = '#0b1116';
-                    typedValue = ''; display.textContent = '?';
-                }, 500);
+                display.style.backgroundColor = 'var(--accent-red)'; playSound('error');
+                setTimeout(() => { display.style.backgroundColor = '#0b1116'; typedValue = ''; display.textContent = '?'; }, 500);
             }
         }
 
-        // ================= מקלדת משותפת =================
+        // --- מקלדת ופונקציות גלריה ---
         function pressPad(val) {
-            playSound('pop');
-            if (val === 'C') typedValue = '';
-            else if (typedValue.length < 3) typedValue += val;
+            playSound('pop'); if (val === 'C') typedValue = ''; else if (typedValue.length < 3) typedValue += val;
             document.getElementById('numpadDisplay').textContent = typedValue || '?';
         }
-        function submitPad() {
-            if (currentStage === 1) checkStage1();
-            else if (currentStage === 3) checkStage3();
-        }
+        function submitPad() { if (currentStage === 1) checkStage1(); else if (currentStage === 3) checkStage3(); }
 
-        // ================= בניית פוסטרים וגלריה =================
         function buildPosterElement(num) {
-            const stat = playerStats.posters[num];
-            const frame = document.createElement('div');
+            const stat = playerStats.posters[num]; const frame = document.createElement('div');
             frame.className = `poster-frame ${stat.revealed >= TOTAL_TILES ? 'unlocked' : ''}`;
-            
-            const img = document.createElement('img');
-            img.className = 'poster-image';
-            img.src = `poster${num}.jpg`;
-            img.onerror = function() { this.style.display = 'none'; };
-            frame.appendChild(img);
+            const img = document.createElement('img'); img.className = 'poster-image'; img.src = `poster${num}.jpg`;
+            img.onerror = function() { this.style.display = 'none'; }; frame.appendChild(img);
 
             if (stat.revealed < TOTAL_TILES) {
-                const overlay = document.createElement('div');
-                overlay.className = 'poster-overlay';
-                overlay.innerHTML = `<div class="poster-overlay-title">${num}</div>`;
-                frame.appendChild(overlay);
-                
-                const tilesGrid = document.createElement('div');
-                tilesGrid.className = 'tiles-grid';
-                
-                // בונים 40 אריחים
+                const overlay = document.createElement('div'); overlay.className = 'poster-overlay';
+                overlay.innerHTML = `<div class="poster-overlay-title">${num}</div>`; frame.appendChild(overlay);
+                const tilesGrid = document.createElement('div'); tilesGrid.className = 'tiles-grid';
                 for (let t = 0; t < TOTAL_TILES; t++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'puzzle-piece';
-                    
-                    // אלגוריתם ליצירת צורות מעוגלות אקראיות שנותנות תחושה של חלקי פאזל
-                    const radii = [
-                        Math.random() > 0.5 ? '40%' : '5%',
-                        Math.random() > 0.5 ? '40%' : '5%',
-                        Math.random() > 0.5 ? '40%' : '5%',
-                        Math.random() > 0.5 ? '40%' : '5%'
-                    ].join(' ');
+                    const tile = document.createElement('div'); tile.className = 'puzzle-piece';
+                    const radii = [ Math.random() > 0.5 ? '40%' : '5%', Math.random() > 0.5 ? '40%' : '5%', Math.random() > 0.5 ? '40%' : '5%', Math.random() > 0.5 ? '40%' : '5%' ].join(' ');
                     tile.style.borderRadius = radii;
-
-                    // מזהים אם האריח הספציפי הזה כבר נחשף לפי מערך ה-order
-                    // stat.order מחזיק את סדר השבירה. נבדוק אם t מופיע ב-X המקומות הראשונים
                     const breakOrderIndex = stat.order.indexOf(t);
-                    if (breakOrderIndex < stat.revealed) {
-                        tile.classList.add('broken');
-                    }
+                    if (breakOrderIndex < stat.revealed) tile.classList.add('broken');
                     tilesGrid.appendChild(tile);
                 }
                 frame.appendChild(tilesGrid);
@@ -846,30 +675,18 @@
         }
 
         function openGallery() {
-            playSound('pop');
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = '';
-            for (let i = 1; i <= 10; i++) {
-                grid.appendChild(buildPosterElement(i));
-            }
+            playSound('pop'); const grid = document.getElementById('galleryGrid'); grid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) grid.appendChild(buildPosterElement(i));
             document.getElementById('galleryModal').classList.add('active');
         }
         function closeGallery() { playSound('pop'); document.getElementById('galleryModal').classList.remove('active'); }
 
-        // כפתור תצוגת הפאזל הבודד בזמן האימון
         function viewCurrentPuzzle() {
-            playSound('pop');
-            const container = document.getElementById('singlePuzzleContainer');
-            container.innerHTML = '';
+            playSound('pop'); const container = document.getElementById('singlePuzzleContainer'); container.innerHTML = '';
             document.getElementById('singlePuzzleTitle').textContent = `ההתקדמות של מספר ${currentNumber}`;
-            container.appendChild(buildPosterElement(currentNumber));
-            document.getElementById('singlePuzzleModal').classList.add('active');
+            container.appendChild(buildPosterElement(currentNumber)); document.getElementById('singlePuzzleModal').classList.add('active');
         }
-        function closeSinglePuzzle() {
-            playSound('pop');
-            document.getElementById('singlePuzzleModal').classList.remove('active');
-        }
-
+        function closeSinglePuzzle() { playSound('pop'); document.getElementById('singlePuzzleModal').classList.remove('active'); }
     </script>
 </body>
 </html>
