@@ -40,13 +40,13 @@
         #welcomeScreen {
             position: fixed; inset: 0; 
             background-image: url('welcome.jpg');
-            background-size: cover; /* גורם לתמונה למלא את כל המסך */
-            background-position: top center; /* מעגן את התמונה למעלה כדי שהטקסט והפנים לא ייחתכו */
+            background-size: cover; 
+            background-position: top center; 
             background-color: var(--bg-dark);
             background-repeat: no-repeat;
             z-index: 100; display: none; flex-direction: column; 
             align-items: center; justify-content: flex-end;
-            padding-bottom: 10vh; /* ממקם את הכפתור קצת מעל התחתית */
+            padding-bottom: 10vh; 
         }
         #welcomeScreen.active { display: flex; }
 
@@ -141,7 +141,13 @@
             background: var(--accent-blue); color: white; font-size: 2rem; font-weight: bold;
             padding: 12px 18px; border-radius: 12px; border: 2px solid #85c1e9; box-shadow: 0 4px 0 #154360;
         }
-        .seq-arrow { color: var(--accent-gold); font-size: 2rem; font-weight: bold; margin: 0 4px; }
+        .seq-arrow-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 4px;
+        }
+        .seq-plus-text {
+            color: var(--accent-green); font-size: 1.2rem; font-weight: bold; margin-bottom: -8px;
+        }
+        .seq-arrow { color: var(--accent-gold); font-size: 2rem; font-weight: bold; }
         .seq-target {
             background: var(--bg-card); color: var(--accent-gold); border: 3px dashed var(--accent-gold);
             min-width: 80px; text-align: center;
@@ -257,7 +263,6 @@
 <body>
 
     <div id="welcomeScreen" class="screen active">
-        <!-- התמונה עכשיו תמלא את כל המסך בהתאם להגדרות ב-CSS החדשות -->
         <button class="start-btn" onclick="startApp()">התחל משחק 🐉</button>
     </div>
 
@@ -525,7 +530,7 @@
             s1.style.display = 'none'; s2.style.display = 'none'; s3.style.display = 'none'; numpad.style.display = 'none';
 
             if (stage === 1) {
-                renderGuideAvatar('stageAvatar', 'hiccup'); guideText.textContent = `חימום למסלול:`;
+                renderGuideAvatar('stageAvatar', 'hiccup'); guideText.innerHTML = `קפיצות של ${currentNumber}! מה המספר הבא?`;
                 s1.style.display = 'block'; numpad.style.display = 'flex'; setupStage1();
             } else if (stage === 2) {
                 renderGuideAvatar('stageAvatar', 'astrid'); guideText.textContent = `בחר מטרה:`;
@@ -546,7 +551,19 @@
             let start = Math.max(1, seqCurrentMultiplier - 2);
             for (let i = start; i < seqCurrentMultiplier; i++) {
                 const box = document.createElement('div'); box.className = 'seq-box'; box.textContent = currentNumber * i; container.appendChild(box);
-                const arrow = document.createElement('div'); arrow.className = 'seq-arrow'; arrow.textContent = '➔'; container.appendChild(arrow);
+                
+                const arrowContainer = document.createElement('div');
+                arrowContainer.className = 'seq-arrow-container';
+                const plusText = document.createElement('div');
+                plusText.className = 'seq-plus-text';
+                plusText.textContent = '+' + currentNumber;
+                const arrow = document.createElement('div'); 
+                arrow.className = 'seq-arrow'; 
+                arrow.textContent = '➔';
+                
+                arrowContainer.appendChild(plusText);
+                arrowContainer.appendChild(arrow);
+                container.appendChild(arrowContainer);
             }
             const target = document.createElement('div'); target.className = 'seq-box seq-target'; target.textContent = '?'; container.appendChild(target);
             currentAnswer = currentNumber * seqCurrentMultiplier;
