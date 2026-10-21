@@ -1,9 +1,3 @@
-**סיכום קצר:**
-רעיון מעולה (וחובה בשלב הבדיקות). הוספתי כפתור "🔄 איפוס גלריה" בתחתית מסך הגלריה. כדי למנוע מצב שעומר לוחץ עליו בטעות ומוחק לעצמו את כל ההתקדמות, עיצבתי אותו ככפתור אפור ועדין, וברגע שלוחצים עליו קופצת הודעת אזהרה שדורשת אישור ("האם אתה בטוח שברצונך לאפס את כל הפוסטרים ולהתחיל מחדש?"). רק לאחר אישור, המערכת תמחק את השמירה ותרענן את האפליקציה למצב נקי לחלוטין.
-
-הנה הקוד המעודכן המלא (העתק והדבק ל-`index.html`):
-
-```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -42,31 +36,26 @@
             overflow-x: hidden;
         }
 
-        /* מסך פתיחה */
+        /* מסך פתיחה אישי */
         #welcomeScreen {
-            position: fixed; inset: 0; background-size: cover; background-position: center;
-            z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed; inset: 0; 
+            background-image: url('welcome.jpg'); 
+            background-size: cover; 
+            background-position: center;
+            z-index: 100; display: none; flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-end; /* דוחף את הכפתור למטה */
+            padding-bottom: 12vh; /* מרחק מהתחתית */
         }
         #welcomeScreen.active { display: flex; }
 
-        .welcome-overlay {
-            background: rgba(11, 17, 22, 0.85); padding: 40px 20px; border-radius: 20px;
-            text-align: center; border: 3px solid var(--accent-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-        }
-
-        .welcome-title {
-            font-size: 3.5rem; color: var(--accent-gold); margin: 0 0 30px 0;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5); line-height: 1.1;
-        }
-
         .start-btn {
             background: linear-gradient(135deg, var(--accent-orange), #d35400);
-            color: white; border: 3px solid white; padding: 16px 32px;
-            font-size: 1.8rem; font-weight: bold; border-radius: 16px; cursor: pointer;
-            box-shadow: 0 6px 0 #a04000; transition: transform 0.1s;
+            color: white; border: 3px solid white; padding: 16px 40px;
+            font-size: 2rem; font-weight: bold; border-radius: 16px; cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5), 0 6px 0 #a04000; transition: transform 0.1s;
         }
-        .start-btn:active { transform: translateY(6px); box-shadow: none; }
+        .start-btn:active { transform: translateY(6px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 
         /* סרגל עליון */
         header {
@@ -267,10 +256,8 @@
 <body>
 
     <div id="welcomeScreen" class="screen active">
-        <div class="welcome-overlay">
-            <h1 class="welcome-title">משחק הכפל<br>של עומר</h1>
-            <button class="start-btn" onclick="startApp()">התחל משחק 🐉</button>
-        </div>
+        <!-- התמונה welcome.jpg תופיע ברקע, והכפתור דחף לתחתית -->
+        <button class="start-btn" onclick="startApp()">התחל משחק 🐉</button>
     </div>
 
     <header id="mainHeader" style="display: none;">
@@ -460,11 +447,7 @@
         let currentAnswer = 0; let typedValue = '';
         let queueStage2 = []; let queueStage3 = [];
 
-        window.onload = () => {
-            const randPoster = Math.floor(Math.random() * 10) + 1;
-            document.getElementById('welcomeScreen').style.backgroundImage = `url('poster${randPoster}.jpg')`;
-        };
-
+        // אין צורך לטעון פוסטר רנדומלי, העיצוב כבר טוען את welcome.jpg
         function startApp() {
             playSound('pop'); document.getElementById('welcomeScreen').classList.remove('active');
             document.getElementById('mainHeader').style.display = 'flex';
@@ -703,5 +686,3 @@
     </script>
 </body>
 </html>
-
-```
