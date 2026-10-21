@@ -1,3 +1,9 @@
+**סיכום קצר:**
+רעיון מעולה (וחובה בשלב הבדיקות). הוספתי כפתור "🔄 איפוס גלריה" בתחתית מסך הגלריה. כדי למנוע מצב שעומר לוחץ עליו בטעות ומוחק לעצמו את כל ההתקדמות, עיצבתי אותו ככפתור אפור ועדין, וברגע שלוחצים עליו קופצת הודעת אזהרה שדורשת אישור ("האם אתה בטוח שברצונך לאפס את כל הפוסטרים ולהתחיל מחדש?"). רק לאחר אישור, המערכת תמחק את השמירה ותרענן את האפליקציה למצב נקי לחלוטין.
+
+הנה הקוד המעודכן המלא (העתק והדבק ל-`index.html`):
+
+```html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -214,6 +220,16 @@
         }
         .modal-close-icon:active { transform: translateY(4px); box-shadow: none; }
 
+        /* כפתור איפוס גלריה */
+        .reset-btn {
+            background: transparent; color: #7f8c8d; border: 1px solid #7f8c8d;
+            padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+            margin-top: 20px; transition: 0.2s;
+        }
+        .reset-btn:hover {
+            background: rgba(231, 76, 60, 0.1); color: var(--accent-red); border-color: var(--accent-red);
+        }
+
         /* גלריה ומסגרת פוסטר */
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 15px; margin-bottom: 10px; }
         @media (min-width: 600px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -346,6 +362,8 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 15px;">🖼️ הגלריה של עומר 🖼️</h2>
             <div class="gallery-grid" id="galleryGrid"></div>
+            <!-- כפתור האיפוס -->
+            <button class="reset-btn" onclick="resetGallery()">🔄 איפוס התקדמות</button>
         </div>
     </div>
 
@@ -674,6 +692,16 @@
             container.appendChild(buildPosterElement(currentNumber)); document.getElementById('singlePuzzleModal').classList.add('active');
         }
         function closeSinglePuzzle() { playSound('pop'); document.getElementById('singlePuzzleModal').classList.remove('active'); }
+        
+        // פונקציית איפוס גלריה
+        function resetGallery() {
+            if (confirm("האם אתה בטוח שברצונך לאפס את כל הפוסטרים ולהתחיל מחדש?")) {
+                localStorage.removeItem('omer_posters_v4');
+                location.reload();
+            }
+        }
     </script>
 </body>
 </html>
+
+```
