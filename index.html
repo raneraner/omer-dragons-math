@@ -36,28 +36,24 @@
             overflow-x: hidden;
         }
 
-        /* מסך פתיחה חכם שמתאים לכל מסך */
+        /* מסך פתיחה - תמונה ממלאת מסך מקצה לקצה */
         #welcomeScreen {
             position: fixed; inset: 0; 
+            background-image: url('welcome.jpg');
+            background-size: cover; /* גורם לתמונה למלא את כל המסך */
+            background-position: top center; /* מעגן את התמונה למעלה כדי שהטקסט והפנים לא ייחתכו */
             background-color: var(--bg-dark);
+            background-repeat: no-repeat;
             z-index: 100; display: none; flex-direction: column; 
-            align-items: center; justify-content: center;
-            gap: 25px; padding: 20px;
+            align-items: center; justify-content: flex-end;
+            padding-bottom: 10vh; /* ממקם את הכפתור קצת מעל התחתית */
         }
         #welcomeScreen.active { display: flex; }
-
-        .welcome-img {
-            max-width: 100%;
-            max-height: 75vh; /* משאיר תמיד מקום לכפתור למטה */
-            object-fit: contain; /* מבטיח שהתמונה לעולם לא תיחתך */
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
 
         .start-btn {
             background: linear-gradient(135deg, var(--accent-orange), #d35400);
             color: white; border: 3px solid white; padding: 16px 40px;
-            font-size: 2rem; font-weight: bold; border-radius: 16px; cursor: pointer;
+            font-size: 2.2rem; font-weight: bold; border-radius: 16px; cursor: pointer;
             box-shadow: 0 6px 15px rgba(0,0,0,0.5), 0 6px 0 #a04000; transition: transform 0.1s;
         }
         .start-btn:active { transform: translateY(6px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
@@ -261,8 +257,7 @@
 <body>
 
     <div id="welcomeScreen" class="screen active">
-        <!-- התמונה לא נחתכת יותר -->
-        <img src="welcome.jpg" class="welcome-img" alt="משחק הכפל של עומר">
+        <!-- התמונה עכשיו תמלא את כל המסך בהתאם להגדרות ב-CSS החדשות -->
         <button class="start-btn" onclick="startApp()">התחל משחק 🐉</button>
     </div>
 
@@ -355,7 +350,6 @@
         <div class="modal-content">
             <h2 style="margin-bottom: 15px;">🖼️ הגלריה של עומר 🖼️</h2>
             <div class="gallery-grid" id="galleryGrid"></div>
-            <!-- כפתור האיפוס -->
             <button class="reset-btn" onclick="resetGallery()">🔄 איפוס התקדמות</button>
         </div>
     </div>
@@ -681,7 +675,6 @@
         }
         function closeSinglePuzzle() { playSound('pop'); document.getElementById('singlePuzzleModal').classList.remove('active'); }
         
-        // פונקציית איפוס גלריה
         function resetGallery() {
             if (confirm("האם אתה בטוח שברצונך לאפס את כל הפוסטרים ולהתחיל מחדש?")) {
                 localStorage.removeItem('omer_posters_v4');
