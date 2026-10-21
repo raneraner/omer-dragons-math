@@ -257,11 +257,16 @@
         
         .poster-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         
-        .poster-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;
-        }
-        .poster-overlay-title { font-size: 3rem; color: rgba(255,255,255,0.3); font-weight: bold; }
+      .poster-overlay {
+    position: absolute; inset: 0; background: transparent;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;
+}
+   .poster-overlay-title { 
+    font-size: 3rem; 
+    color: rgba(255,255,255,0.8); 
+    font-weight: bold; 
+    text-shadow: 0 0 15px rgba(0,0,0,1); 
+}
 
         /* רשת חלקי הפאזל (8x5) - 40 חלקים אקראיים */
         .tiles-grid {
